@@ -1,0 +1,21 @@
+{
+  "short_name": "Nathalli App",
+  "name": "Nathalli Ricco | Gestão",
+  "icons": [
+    {
+      "src": "https://azdevcoder.github.io/nathricco/assets/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://azdevcoder.github.io/nathricco/assets/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/nathricco/index.html",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/nathricco/",
+  "theme_color": "#1a73e8"
+}
