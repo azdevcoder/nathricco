@@ -17,6 +17,8 @@
             --sidebar-bg: #ffffff;
             --header-bg: #ffffff;
             --modal-bg: #ffffff;
+            /* COR DO DIA ATUAL - MODO CLARO (Azul bem claro) */
+            --fc-today-bg-color: #e8f0fe; 
         }
 
         [data-theme="dark"] {
@@ -26,6 +28,8 @@
             --sidebar-bg: #1e1e1e;
             --header-bg: #1e1e1e;
             --modal-bg: #2d2d2d;
+            /* COR DO DIA ATUAL - MODO ESCURO (Azul escuro suave) */
+            --fc-today-bg-color: rgba(26, 115, 232, 0.15);
             color-scheme: dark;
         }
 
@@ -37,26 +41,10 @@
             transition: background 0.3s ease;
         }
 
-        /* Layout Container */
-        .app-container {
-            display: flex;
-            height: 100vh;
-            flex-direction: column;
-        }
+        .app-container { display: flex; height: 100vh; flex-direction: column; }
+        .main-content { display: flex; flex: 1; overflow: hidden; }
+        #calendar { flex: 1; padding: 10px; background: var(--bg-main); }
 
-        .main-content {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        #calendar { 
-            flex: 1;
-            padding: 10px; 
-            background: var(--bg-main);
-        }
-
-        /* Sidebar Desktop */
         .sidebar {
             width: 260px;
             border-right: 1px solid var(--border-color);
@@ -66,7 +54,6 @@
             flex-direction: column;
         }
 
-        /* Header */
         .header-top {
             height: 64px;
             display: flex;
@@ -78,31 +65,13 @@
             z-index: 1030;
         }
 
-        /* Custom FullCalendar Styles */
         .fc { --fc-border-color: var(--border-color); font-size: 0.9rem; }
         .fc .fc-toolbar-title { font-size: 1.2rem; font-weight: 600; }
         .fc .fc-button-primary { background-color: var(--google-blue); border: none; text-transform: capitalize; }
-        --fc-today-bg-color {rgba(26, 115, 232, 0.15) }
         
-        [data-theme="dark"] .fc-theme-standard td, 
-        [data-theme="dark"] .fc-theme-standard th { border-color: var(--border-color); }
-        [data-theme="dark"] .fc-list-day-cushion { background: var(--sidebar-bg); }
-        
-        [data-theme="dark"] .text-muted {
-            color: rgba(255, 255, 255, 0.7) !important;
-        }
+        [data-theme="dark"] .text-muted { color: rgba(255, 255, 255, 0.7) !important; }
+        [data-theme="dark"] .text-inherit, [data-theme="dark"] .list-group-item { color: #ffffff !important; }
 
-        [data-theme="dark"] .text-inherit, 
-        [data-theme="dark"] .list-group-item {
-            color: #ffffff !important;
-        }
-
-        [data-theme="dark"] .list-group-item-action:hover {
-            background-color: rgba(255, 255, 255, 0.1) !important;
-            color: var(--google-blue) !important;
-        }
-
-        /* Floating Action Button */
         .fab {
             position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px;
             border-radius: 16px; background-color: var(--google-blue);
@@ -112,13 +81,11 @@
         }
 
         .theme-toggle { cursor: pointer; padding: 10px; border-radius: 50%; color: var(--text-main); }
-        .theme-toggle:hover { background: rgba(128,128,128,0.1); }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .fc .fc-toolbar { flex-direction: column; gap: 10px; }
             .fc .fc-toolbar-title { font-size: 1rem; }
-            .header-top h5 { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -132,7 +99,6 @@
             </button>
             <i class="bi bi-calendar-check-fill text-primary fs-4 me-2"></i>
             <h5 class="mb-0 fw-bold d-none d-sm-block">Agenda | <span class="text-secondary fw-normal">Nathalli Ricco</span></h5>
-            <h5 class="mb-0 fw-bold d-sm-none">Agenda</h5>
         </div>
         <div class="d-flex align-items-center gap-1">
             <a href="index.html" class="theme-toggle"><i class="bi bi-house fs-4"></i></a>
@@ -146,7 +112,6 @@
             <button class="btn btn-primary shadow-sm rounded-pill px-4 py-2 mb-4 w-100" onclick="openNewModal()">
                 <i class="bi bi-plus-lg me-2"></i>Criar
             </button>
-            <h6 class="small fw-bold text-muted mb-3">MENU</h6>
             <nav class="list-group list-group-flush">
                 <a href="#" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
                     <i class="bi bi-people me-3"></i>Pacientes
@@ -241,7 +206,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputStart = document.getElementById('appointmentStart');
     const inputEnd = document.getElementById('appointmentEnd');
 
-    // --- TEMA ---
     const themeBtn = document.getElementById('themeBtn');
     const themeIcon = document.getElementById('themeIcon');
     const savedTheme = localStorage.getItem('theme_nath') || 'light';
@@ -254,7 +218,6 @@ document.addEventListener('DOMContentLoaded', function() {
         themeIcon.className = newTheme === 'light' ? 'bi bi-moon-stars fs-4' : 'bi bi-sun fs-4';
     });
 
-    // --- AUTO-FIM (1 HORA) ---
     inputStart.addEventListener('change', () => {
         if (inputStart.value) {
             let start = new Date(inputStart.value);
@@ -263,7 +226,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // --- CALENDÁRIO ---
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek',
         locale: 'pt-br',
@@ -275,8 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerToolbar: {
             left: window.innerWidth < 768 ? 'prev,next' : 'prev,next today',
             center: 'title',
-            // BOTÃO LISTA ADICIONADO AQUI: listWeek
-            right: window.innerWidth < 768 ? 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' : 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
         buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', list: 'Lista' },
         titleFormat: { year: 'numeric', month: 'numeric', day: 'numeric' },
@@ -287,13 +248,10 @@ document.addEventListener('DOMContentLoaded', function() {
         eventClick: (info) => editEvent(info.event),
         eventDrop: updateStorage,
         eventResize: updateStorage,
-        windowResize: () => {
-            calendar.changeView(window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek');
-        }
+        windowResize: () => { calendar.changeView(window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek'); }
     });
     calendar.render();
 
-    // --- SYNC GITHUB ---
     async function loadEvents() {
         try {
             const url = "https://azdevcoder.github.io/nathricco/dados/agendamentos.json?t=" + Date.now();
@@ -339,7 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
             end: inputEnd.value,
             backgroundColor: document.getElementById('eventColor').value
         };
-
         if (id) {
             const ev = calendar.getEventById(id);
             ev.setProp('title', data.title);
@@ -378,4 +335,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
