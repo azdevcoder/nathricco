@@ -15,8 +15,6 @@
       "sizes": "512x512",
       "purpose": "any"
     }
-  ]
-}
   ],
   "start_url": "index.html",
   "display": "standalone",
