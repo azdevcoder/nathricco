@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nath-ricco-v2';
+const CACHE_NAME = 'nath-ricco-v3';
 const ASSETS = [
   './',
   './index.html',
