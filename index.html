@@ -35,7 +35,7 @@
             --sidebar-bg: #1e1e1e;
             --header-bg: #1e1e1e;
             --modal-bg: #2d2d2d;
-            --fc-today-bg-color: rgba(26, 115, 232, 0.15);
+            --fc-today-bg-color: rgba(26, 115, 232, 0.2);
             color-scheme: dark;
         }
         body { background-color: var(--bg-main); color: var(--text-main); font-family: 'Roboto', sans-serif; overflow: hidden; transition: background 0.3s ease; }
@@ -45,7 +45,7 @@
         .sidebar { width: 260px; border-right: 1px solid var(--border-color); background: var(--sidebar-bg); padding: 20px; display: flex; flex-direction: column; }
         .header-top { height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid var(--border-color); background: var(--header-bg); z-index: 1030; }
         .fc { --fc-border-color: var(--border-color); font-size: 0.9rem; }
-        [data-theme="dark"] .text-muted, [data-theme="dark"] label { color: #ffffff !important; }
+        [data-theme="dark"] label, [data-theme="dark"] .modal-title { color: #ffffff !important; }
         .fab { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; border-radius: 16px; background-color: var(--google-blue); box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 1000; cursor: pointer; color: white; border: none; }
         .theme-toggle { cursor: pointer; padding: 10px; border-radius: 50%; color: var(--text-main); text-decoration: none; }
         @media (max-width: 768px) { .sidebar { display: none; } }
@@ -63,7 +63,7 @@
     <div class="app-container">
         <header class="header-top shadow-sm">
             <div class="d-flex align-items-center">
-                <button class="btn d-md-none me-2 text-inherit" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar"><i class="bi bi-list fs-3"></i></button>
+                <button class="btn d-md-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar"><i class="bi bi-list fs-3 text-inherit"></i></button>
                 <i class="bi bi-calendar-check-fill text-primary fs-4 me-2"></i>
                 <h5 class="mb-0 fw-bold d-none d-sm-block">Agenda | <span class="text-secondary fw-normal">Nathalli Ricco</span></h5>
             </div>
@@ -135,8 +135,134 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
     <script>
-        // ... (Lógica do FullCalendar e updateStorage que já tens nos arquivos anteriores) ...
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar');
+        const modalEl = document.getElementById('appointmentModal');
+        const modal = new bootstrap.Modal(modalEl);
+        const form = document.getElementById('appointmentForm');
+        const btnDelete = document.getElementById('btnDelete');
+        const inputStart = document.getElementById('appointmentStart');
+        const inputEnd = document.getElementById('appointmentEnd');
+
+        // --- TEMA ---
+        const themeBtn = document.getElementById('themeBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const savedTheme = localStorage.getItem('theme_nath') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        themeIcon.className = savedTheme === 'light' ? 'bi bi-moon-stars fs-4' : 'bi bi-sun fs-4';
+
+        themeBtn.addEventListener('click', () => {
+            const newTheme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme_nath', newTheme);
+            themeIcon.className = newTheme === 'light' ? 'bi bi-moon-stars fs-4' : 'bi bi-sun fs-4';
+        });
+
+        // --- CALENDÁRIO ---
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek',
+            locale: 'pt-br',
+            nowIndicator: true,
+            allDaySlot: false,
+            slotMinTime: '07:00:00',
+            slotMaxTime: '21:00:00',
+            height: '100%',
+            headerToolbar: {
+                left: window.innerWidth < 768 ? 'prev,next' : 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', list: 'Lista' },
+            selectable: true,
+            editable: true,
+            events: [], 
+            select: (info) => openNewModal(info.startStr.slice(0, 16)),
+            eventClick: (info) => editEvent(info.event),
+            eventDrop: updateStorage,
+            eventResize: updateStorage
+        });
+        calendar.render();
+
+        async function loadEvents() {
+            try {
+                const res = await fetch("https://azdevcoder.github.io/nathricco/dados/agendamentos.json?t=" + Date.now());
+                if (res.ok) {
+                    const data = await res.json();
+                    calendar.removeAllEvents();
+                    calendar.addEventSource(data);
+                    localStorage.setItem('appointments_nath', JSON.stringify(data));
+                }
+            } catch (e) {
+                const local = localStorage.getItem('appointments_nath');
+                if (local) calendar.addEventSource(JSON.parse(local));
+            }
+        }
+        loadEvents();
+
+        window.openNewModal = (date = '') => {
+            form.reset();
+            document.getElementById('eventID').value = '';
+            inputStart.value = date || new Date().toISOString().slice(0, 16);
+            btnDelete.classList.add('d-none');
+            modal.show();
+        };
+
+        function editEvent(event) {
+            document.getElementById('eventID').value = event.id;
+            document.getElementById('patientName').value = event.title;
+            inputStart.value = event.startStr.slice(0, 16);
+            inputEnd.value = event.endStr ? event.endStr.slice(0, 16) : '';
+            document.getElementById('eventColor').value = event.backgroundColor;
+            btnDelete.classList.remove('d-none');
+            modal.show();
+        }
+
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            const id = document.getElementById('eventID').value;
+            const data = {
+                title: document.getElementById('patientName').value,
+                start: inputStart.value,
+                end: inputEnd.value,
+                backgroundColor: document.getElementById('eventColor').value
+            };
+            if (id) {
+                const ev = calendar.getEventById(id);
+                ev.setProp('title', data.title);
+                ev.setProp('backgroundColor', data.backgroundColor);
+                ev.setStart(data.start);
+                ev.setEnd(data.end);
+            } else {
+                calendar.addEvent({ id: Date.now().toString(), ...data });
+            }
+            updateStorage();
+            modal.hide();
+        };
+
+        btnDelete.onclick = () => {
+            if (confirm('Excluir agendamento?')) {
+                calendar.getEventById(document.getElementById('eventID').value).remove();
+                updateStorage();
+                modal.hide();
+            }
+        };
+
+        async function updateStorage() {
+            const events = calendar.getEvents().map(e => ({
+                id: e.id, title: e.title, start: e.startStr, end: e.endStr, backgroundColor: e.backgroundColor
+            }));
+            localStorage.setItem('appointments_nath', JSON.stringify(events));
+            try {
+                await fetch("https://nathricco.onrender.com/salvar-agenda", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(events)
+                });
+            } catch (e) { console.error("Sync error", e); }
+        }
+    });
     </script>
 </body>
 </html>
