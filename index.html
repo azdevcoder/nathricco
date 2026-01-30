@@ -58,17 +58,13 @@
             padding: 10px 16px;
             border-bottom: 1px solid var(--border-color);
             background: var(--header-bg);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: sticky; top: 0; z-index: 100;
         }
 
         .sidebar {
             border-right: 1px solid var(--border-color);
-            padding: 20px;
-            width: 280px;
-            background: var(--sidebar-bg);
-            min-height: 100vh;
+            padding: 20px; width: 280px;
+            background: var(--sidebar-bg); min-height: 100vh;
         }
 
         .theme-toggle { cursor: pointer; padding: 8px; border-radius: 50%; color: inherit; text-decoration: none; }
@@ -290,54 +286,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    function updateStorage() {
+    // --- SINCRONIZAÇÃO ---
+    async function updateStorage() {
         const events = calendar.getEvents().map(e => ({
-            id: e.id, title: e.title, start: e.startStr, end: e.endStr, backgroundColor: e.backgroundColor
+            id: e.id, 
+            title: e.title, 
+            start: e.startStr, 
+            end: e.endStr, 
+            backgroundColor: e.backgroundColor
         }));
+
+        // Backup local
         localStorage.setItem('appointments_nath', JSON.stringify(events));
+
+        // Envio para o Render (Substitua pela sua URL real do Render)
+        try {
+            const response = await fetch("https://nathricco.onrender.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(events)
+            });
+            if (response.ok) console.log("Sincronizado com GitHub!");
+        } catch (err) {
+            console.error("Erro na sincronização:", err);
+        }
     }
 });
-
-async function updateStorage() {
-    const events = calendar.getEvents().map(e => ({
-        id: e.id, 
-        title: e.title, 
-        start: e.startStr, 
-        end: e.endStr, 
-        backgroundColor: e.backgroundColor
-    }));
-
-    // Backup local (Navegador)
-    localStorage.setItem('appointments_nath', JSON.stringify(events));
-
-    // Sincronização com GitHub (Via sua API no Render)
-    try {
-        const response = await fetch("https://nathricco.onrender.com", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(events)
-        });
-        
-        if (response.ok) {
-            console.log("Sincronizado com sucesso!");
-        }
-    } catch (err) {
-        console.error("Falha ao salvar no GitHub", err);
-    }
-    };
-
-    // 1. Salva no navegador (Invisível e instantâneo)
-    localStorage.setItem('appointments_nath', JSON.stringify(events));
-
-    // 2. Envia para o seu servidor (Invisível, via segundo plano)
-    fetch("https://azdevcoder.github.io/nathricco/dados", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(events)
-    })
-    .then(res => console.log("Sincronizado com sucesso"))
-    .catch(err => console.error("Erro na sincronização automática"));
-
 </script>
 </body>
 </html>
