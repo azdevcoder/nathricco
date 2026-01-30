@@ -144,6 +144,18 @@
         color: #ffffff !important;
     }
     </style>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a73e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Nath Agenda">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log("PWA: Service Worker Registrado"));
+  }
+</script>
 </head>
 <body data-theme="light">
 
