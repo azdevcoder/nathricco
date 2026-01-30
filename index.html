@@ -211,7 +211,8 @@ document.addEventListener('DOMContentLoaded', function() {
         buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia' },
         selectable: true,
         editable: true,
-        events: JSON.parse(localStorage.getItem('appointments_nath')) || [],
+        // Inicializa vazio, loadEventsFromGitHub vai preencher
+        events: [], 
         select: (info) => openNewModal(info.startStr.slice(0, 16)),
         eventClick: (info) => editEvent(info.event),
         eventDrop: () => updateStorage(),
@@ -219,22 +220,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     calendar.render();
 
-    // --- FUNÇÃO: CARREGAR DO GITHUB ---
+    // --- CARREGAR DO GITHUB (BLINDADO) ---
     async function loadEventsFromGitHub() {
         try {
-            const response = await fetch("https://azdevcoder.github.io/nathricco/dados/agendamentos.json?nocache=" + Date.now());
+            // NOCACHE é fundamental para não ler dados velhos do navegador
+            const url = "https://azdevcoder.github.io/nathricco/dados/agendamentos.json?t=" + new Date().getTime();
+            const response = await fetch(url);
+            
             if (response.ok) {
                 const events = await response.json();
+                
+                // Limpa o que tinha antes e coloca o que veio do GitHub
                 calendar.removeAllEvents();
                 calendar.addEventSource(events);
+                
+                // Sincroniza o localStorage para ficar igual ao GitHub
                 localStorage.setItem('appointments_nath', JSON.stringify(events));
-                console.log("Agenda sincronizada com o GitHub.");
+                console.log("Agenda sincronizada com GitHub!");
+            } else {
+                // Se não achou no GitHub, tenta o local como plano B
+                const localData = localStorage.getItem('appointments_nath');
+                if (localData) calendar.addEventSource(JSON.parse(localData));
             }
         } catch (err) {
-            console.warn("Erro ao carregar do GitHub, usando dados locais.");
+            console.error("Erro ao carregar, usando backup local:", err);
+            const localData = localStorage.getItem('appointments_nath');
+            if (localData) calendar.addEventSource(JSON.parse(localData));
         }
     }
 
+    // Chama a carga assim que o calendário estiver pronto
     loadEventsFromGitHub();
 
     window.openNewModal = (date = '') => {
