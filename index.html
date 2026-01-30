@@ -226,13 +226,13 @@ document.addEventListener('DOMContentLoaded', function() {
         buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia' },
         selectable: true,
         editable: true,
+        titleFormat: { year: 'numeric', month: 'numeric', day: 'numeric' },
         // Inicializa vazio, loadEventsFromGitHub vai preencher
         events: [], 
         select: (info) => openNewModal(info.startStr.slice(0, 16)),
         eventClick: (info) => editEvent(info.event),
         eventDrop: () => updateStorage(),
         eventResize: () => updateStorage()
-        titleFormat: { year: 'numeric', month: 'numeric', day: 'numeric' },
     });
     calendar.render();
 
@@ -344,5 +344,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
 
