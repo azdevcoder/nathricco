@@ -232,6 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
         eventClick: (info) => editEvent(info.event),
         eventDrop: () => updateStorage(),
         eventResize: () => updateStorage()
+        titleFormat: { year: 'numeric', month: 'numeric', day: 'numeric' },
     });
     calendar.render();
 
@@ -343,4 +344,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
