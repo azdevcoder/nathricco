@@ -1,4 +1,4 @@
-const cacheName = 'nath-agenda-v25';
+const cacheName = 'nath-agenda-v26';
 const assets = [
   './',
   './index.html',
