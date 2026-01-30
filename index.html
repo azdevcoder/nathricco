@@ -295,8 +295,8 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('appointments_nath', JSON.stringify(events));
 
         try {
-            // MUDANÇA IMPORTANTE: Adicionei a rota /salvar-agenda
-            const response = await fetch("https://nathricco.onrender.com/salvar-agenda", {
+            // MUDANÇA IMPORTANTE: Adicionei a rota
+            const response = await fetch("https://nathricco.onrender.com/upload", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(events)
@@ -310,3 +310,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
