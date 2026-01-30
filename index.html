@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nathalli Ricco | Agenda</title>
+    
+    <link rel="manifest" href="manifest.json?v=1">
+    <meta name="theme-color" content="#1a73e8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Nath Agenda">
+    <link rel="apple-touch-icon" href="calendar.png">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -17,20 +25,30 @@
             --sidebar-bg: #ffffff;
             --header-bg: #ffffff;
             --modal-bg: #ffffff;
-            /* COR DO DIA ATUAL - MODO CLARO (Azul bem claro) */
             --fc-today-bg-color: #e8f0fe; 
         }
 
         [data-theme="dark"] {
             --bg-main: #121212;
-            --text-main: #e8eaed;
+            --text-main: #ffffff; /* Texto branco no modo dark */
             --border-color: #3c4043;
             --sidebar-bg: #1e1e1e;
             --header-bg: #1e1e1e;
             --modal-bg: #2d2d2d;
-            /* COR DO DIA ATUAL - MODO ESCURO (Azul escuro suave) */
             --fc-today-bg-color: rgba(26, 115, 232, 0.15);
             color-scheme: dark;
+        }
+
+        /* Ajustes modo Dark para FullCalendar e Tabelas */
+        [data-theme="dark"] .fc-theme-standard td, 
+        [data-theme="dark"] .fc-theme-standard th,
+        [data-theme="dark"] .fc-col-header-cell-cushion,
+        [data-theme="dark"] .fc-toolbar-title,
+        [data-theme="dark"] .fc-list-event-title,
+        [data-theme="dark"] .fc-list-day-text,
+        [data-theme="dark"] .fc-list-day-side,
+        [data-theme="dark"] label {
+            color: #ffffff !important;
         }
 
         body { 
@@ -88,6 +106,17 @@
             .fc .fc-toolbar-title { font-size: 1rem; }
         }
     </style>
+
+    <script>
+        // Registro do Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('PWA: Service Worker registrado'))
+                .catch(err => console.log('PWA: Falha ao registrar SW', err));
+            });
+        }
+    </script>
 </head>
 <body data-theme="light">
 
@@ -131,7 +160,7 @@
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar" style="width: 280px; background: var(--sidebar-bg);">
     <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-bold" color="white">Nathalli Ricco</h5>
+        <h5 class="offcanvas-title fw-bold">Nathalli Ricco</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
@@ -213,7 +242,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const themeIcon = document.getElementById('themeIcon');
     const savedTheme = localStorage.getItem('theme_nath') || 'light';
     document.body.setAttribute('data-theme', savedTheme);
-    
+    themeIcon.className = savedTheme === 'light' ? 'bi bi-moon-stars fs-4' : 'bi bi-sun fs-4';
+
     themeBtn.addEventListener('click', () => {
         const newTheme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
         document.body.setAttribute('data-theme', newTheme);
@@ -338,9 +368,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
-
-
-
-
-
