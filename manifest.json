@@ -1,0 +1,17 @@
+{
+  "name": "Nathalli Ricco Agenda",
+  "short_name": "Nath Agenda",
+  "description": "Sistema de Gestão e Agenda Nathalli Ricco",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a73e8",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2370/2370264.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
