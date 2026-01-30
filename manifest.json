@@ -1,19 +1,22 @@
 {
   "short_name": "Nathalli Ricco",
   "name": "Nathalli Ricco | Gestão",
+{
   "icons": [
     {
-      "src": "calendar.png",
+      "src": "calendar.png?v=2",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "calendar.png",
+      "src": "calendar.png?v=2",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
     }
+  ]
+}
   ],
   "start_url": "index.html",
   "display": "standalone",
