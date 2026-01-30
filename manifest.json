@@ -1,16 +1,17 @@
 {
   "name": "Nathalli Ricco Agenda",
   "short_name": "Nath Ricco",
-  "description": "Sistema de Gestão Nathalli Ricco",
-  "start_url": "./index.html",
+  "description": "Sistema de Gestão e Agenda Nathalli Ricco",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1a73e8",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2370/2370264.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "https://fonts.gstatic.com/s/i/materialsymbolsoutlined/person/Admiral/48px.svg",
+      "sizes": "48x48",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ]
 }
