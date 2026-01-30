@@ -4,12 +4,12 @@
   "icons": [
     {
       "src": "https://azdevcoder.github.io/nathricco/calendar.svg",
-      "type": "image/png",
+      "type": "image/svg",
       "sizes": "192x192"
     },
     {
       "src": "https://azdevcoder.github.io/nathricco/calendar.svg",
-      "type": "image/png",
+      "type": "image/svg",
       "sizes": "512x512"
     }
   ],
