@@ -1,4 +1,4 @@
-const cacheName = 'nath-agenda-v4'; // Subimos para v3
+const cacheName = 'nath-agenda-v5'; // Subimos para v3
 const assets = [
   './',
   './index.html',
