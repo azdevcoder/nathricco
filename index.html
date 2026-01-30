@@ -15,11 +15,20 @@
 <link rel="manifest" href="manifest.json?v=2">
 
 <script>
+  <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-      .then(() => console.log("Service Worker registrado com sucesso!"))
-      .catch(err => console.log("Falha ao registrar SW:", err));
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for(let registration of registrations) {
+        registration.unregister(); // Limpa versões com erro
+      }
+    });
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js?v=2')
+        .then(reg => console.log("SW Atualizado!"))
+        .catch(err => console.log("Erro:", err));
+    });
   }
+</script>
 </script>
     
     <style>
@@ -352,6 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
 
 
