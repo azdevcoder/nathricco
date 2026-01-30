@@ -3,12 +3,12 @@
   "name": "Nathalli Ricco | Gestão",
   "icons": [
     {
-      "src": "https://azdevcoder.github.io/nathricco/calendar.svg",
-      "type": "image/svg",
+      "src": "https://azdevcoder.github.io/nathricco/calendar.png",
+      "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "https://azdevcoder.github.io/nathricco/calendar.svg",
+      "src": "https://azdevcoder.github.io/nathricco/calendar.png",
       "type": "image/svg",
       "sizes": "512x512"
     }
