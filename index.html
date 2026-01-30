@@ -86,6 +86,21 @@
         [data-theme="dark"] .fc-theme-standard td, 
         [data-theme="dark"] .fc-theme-standard th { border-color: var(--border-color); }
         [data-theme="dark"] .fc-list-day-cushion { background: var(--sidebar-bg); }
+        /* Quando o tema for dark, muda a cor do MENU (text-muted) e dos links (text-inherit) */
+        [data-theme="dark"] .text-muted {
+        color: rgba(255, 255, 255, 0.7) !important;
+}
+
+[data-theme="dark"] .text-inherit, 
+[data-theme="dark"] .list-group-item {
+    color: #ffffff !important;
+}
+
+/* Efeito de hover nos itens do menu para não sumirem no dark mode */
+[data-theme="dark"] .list-group-item-action:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: var(--google-blue) !important;
+}
 
         /* Floating Action Button */
         .fab {
@@ -363,4 +378,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
