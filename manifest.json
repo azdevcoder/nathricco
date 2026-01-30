@@ -4,13 +4,13 @@
 {
   "icons": [
     {
-      "src": "calendar.png?v=2",
+      "src": "calendar.png?v=3",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "calendar.png?v=2",
+      "src": "calendar.png?v=3",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
