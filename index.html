@@ -86,21 +86,20 @@
         [data-theme="dark"] .fc-theme-standard td, 
         [data-theme="dark"] .fc-theme-standard th { border-color: var(--border-color); }
         [data-theme="dark"] .fc-list-day-cushion { background: var(--sidebar-bg); }
-        /* Quando o tema for dark, muda a cor do MENU (text-muted) e dos links (text-inherit) */
+        
         [data-theme="dark"] .text-muted {
-        color: rgba(255, 255, 255, 0.7) !important;
-}
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
 
-[data-theme="dark"] .text-inherit, 
-[data-theme="dark"] .list-group-item {
-    color: #ffffff !important;
-}
+        [data-theme="dark"] .text-inherit, 
+        [data-theme="dark"] .list-group-item {
+            color: #ffffff !important;
+        }
 
-/* Efeito de hover nos itens do menu para não sumirem no dark mode */
-[data-theme="dark"] .list-group-item-action:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: var(--google-blue) !important;
-}
+        [data-theme="dark"] .list-group-item-action:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: var(--google-blue) !important;
+        }
 
         /* Floating Action Button */
         .fab {
@@ -114,7 +113,6 @@
         .theme-toggle { cursor: pointer; padding: 10px; border-radius: 50%; color: var(--text-main); }
         .theme-toggle:hover { background: rgba(128,128,128,0.1); }
 
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .fc .fc-toolbar { flex-direction: column; gap: 10px; }
@@ -276,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerToolbar: {
             left: window.innerWidth < 768 ? 'prev,next' : 'prev,next today',
             center: 'title',
-            right: window.innerWidth < 768 ? 'timeGridDay,listWeek' : 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', list: 'Lista' },
         titleFormat: { year: 'numeric', month: 'numeric', day: 'numeric' },
@@ -378,5 +376,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
-
