@@ -134,7 +134,6 @@
             const form = document.getElementById('appointmentForm');
             const btnDelete = document.getElementById('btnDelete');
 
-            // Lógica de Tema
             const themeBtn = document.getElementById('themeBtn');
             const themeIcon = document.getElementById('themeIcon');
             const savedTheme = localStorage.getItem('theme_nath') || 'light';
@@ -148,7 +147,6 @@
                 themeIcon.className = newTheme === 'light' ? 'bi bi-moon-stars fs-4' : 'bi bi-sun fs-4';
             });
 
-            // Inicialização do Calendário
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek',
                 locale: 'pt-br',
@@ -177,7 +175,7 @@
                         const data = await res.json();
                         calendar.addEventSource(data);
                     }
-                } catch (e) { console.error("Erro ao carregar eventos"); }
+                } catch (e) { console.error("Erro ao carregar"); }
             }
             loadEvents();
 
@@ -217,7 +215,7 @@
             };
 
             btnDelete.onclick = () => {
-                if(confirm("Deseja excluir este agendamento?")) {
+                if(confirm("Excluir agendamento?")) {
                     calendar.getEventById(document.getElementById('eventID').value).remove();
                     updateStorage();
                     modal.hide();
@@ -228,11 +226,13 @@
                 const events = calendar.getEvents().map(e => ({
                     id: e.id, title: e.title, start: e.startStr, end: e.endStr, backgroundColor: e.backgroundColor
                 }));
-                await fetch("https://nathricco.onrender.com/salvar-agenda", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(events)
-                });
+                try {
+                    await fetch("https://nathricco.onrender.com/salvar-agenda", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(events)
+                    });
+                } catch (e) { console.error("Sync error", e); }
             }
         });
     </script>
