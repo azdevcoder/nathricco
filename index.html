@@ -33,143 +33,182 @@
             background-color: var(--bg-main); 
             color: var(--text-main);
             font-family: 'Roboto', sans-serif; 
-            overflow-x: hidden; 
+            overflow: hidden; 
             transition: background 0.3s ease;
         }
 
-        #calendar { height: calc(100vh - 70px); padding: 10px; }
-
-        [data-theme="dark"] .fc {
-            --fc-page-bg-color: #121212;
-            --fc-border-color: #3c4043;
-            --fc-neutral-bg-color: #1e1e1e;
-            --fc-today-bg-color: rgba(26, 115, 232, 0.15);
+        /* Layout Container */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
         }
-        
-        [data-theme="dark"] .fc .fc-col-header-cell-cushion,
-        [data-theme="dark"] .fc .fc-toolbar-title { color: var(--text-main); }
-        /* Quando o tema for dark, muda a cor do MENU (text-muted) e dos links (text-inherit) */
-        [data-theme="dark"] .text-muted {
-        color: rgba(255, 255, 255, 0.7) !important;
-}
 
-[data-theme="dark"] .text-inherit, 
-[data-theme="dark"] .list-group-item {
-    color: #ffffff !important;
-}
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
 
-/* Efeito de hover nos itens do menu para não sumirem no dark mode */
-[data-theme="dark"] .list-group-item-action:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: var(--google-blue) !important;
-}
+        #calendar { 
+            flex: 1;
+            padding: 10px; 
+            background: var(--bg-main);
+        }
 
+        /* Sidebar Desktop */
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid var(--border-color);
+            background: var(--sidebar-bg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
         .header-top {
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 16px;
+            padding: 0 16px;
             border-bottom: 1px solid var(--border-color);
             background: var(--header-bg);
-            position: sticky; top: 0; z-index: 100;
+            z-index: 1030;
         }
 
-        .sidebar {
-            border-right: 1px solid var(--border-color);
-            padding: 20px; width: 280px;
-            background: var(--sidebar-bg); min-height: 100vh;
-        }
+        /* Custom FullCalendar Styles */
+        .fc { --fc-border-color: var(--border-color); font-size: 0.9rem; }
+        .fc .fc-toolbar-title { font-size: 1.2rem; font-weight: 600; }
+        .fc .fc-button-primary { background-color: var(--google-blue); border: none; text-transform: capitalize; }
+        
+        [data-theme="dark"] .fc-theme-standard td, 
+        [data-theme="dark"] .fc-theme-standard th { border-color: var(--border-color); }
+        [data-theme="dark"] .fc-list-day-cushion { background: var(--sidebar-bg); }
 
-        .theme-toggle { cursor: pointer; padding: 8px; border-radius: 50%; color: inherit; text-decoration: none; }
-        .theme-toggle:hover { background: rgba(128,128,128,0.2); }
-
+        /* Floating Action Button */
         .fab {
             position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px;
-            border-radius: 16px; background-color: var(--modal-bg);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-radius: 16px; background-color: var(--google-blue);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             display: flex; align-items: center; justify-content: center;
-            z-index: 1000; cursor: pointer; color: var(--google-blue);
+            z-index: 1000; cursor: pointer; color: white; border: none;
         }
 
-        .modal-content { background-color: var(--modal-bg); color: var(--text-main); }
-        .form-control, .form-select { background-color: transparent; color: inherit; border-color: var(--border-color); }
+        .theme-toggle { cursor: pointer; padding: 10px; border-radius: 50%; color: var(--text-main); }
+        .theme-toggle:hover { background: rgba(128,128,128,0.1); }
 
-        @media (max-width: 768px) { .sidebar { display: none; } #calendar { padding: 5px; } }
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .fc .fc-toolbar { flex-direction: column; gap: 10px; }
+            .fc .fc-toolbar-title { font-size: 1rem; }
+            .header-top h5 { font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body data-theme="light">
 
-<div class="header-top shadow-sm">
-    <div class="d-flex align-items-center">
-        <i class="bi bi-calendar-check-fill text-primary fs-3 me-2"></i>
-        <h5 class="mb-0 fw-bold">Agenda | <span class="text-secondary fw-normal">Nathalli Ricco</span></h5>
-    </div>
-    <div class="d-flex align-items-center gap-2">
-        <a href="index.html" class="theme-toggle"><i class="bi bi-house fs-2"></i></a>
-        <a href="contrato.html" class="theme-toggle"><i class="bi bi-blockquote-left fs-2"></i></a>
-        <div class="theme-toggle" id="themeBtn"><i class="bi bi-moon-stars fs-2" id="themeIcon"></i></div>
+<div class="app-container">
+    <header class="header-top shadow-sm">
+        <div class="d-flex align-items-center">
+            <button class="btn d-md-none me-2 text-inherit" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            <i class="bi bi-calendar-check-fill text-primary fs-4 me-2"></i>
+            <h5 class="mb-0 fw-bold d-none d-sm-block">Agenda | <span class="text-secondary fw-normal">Nathalli Ricco</span></h5>
+            <h5 class="mb-0 fw-bold d-sm-none">Agenda</h5>
+        </div>
+        <div class="d-flex align-items-center gap-1">
+            <a href="index.html" class="theme-toggle"><i class="bi bi-house fs-4"></i></a>
+            <a href="contrato.html" class="theme-toggle"><i class="bi bi-file-earmark-text fs-4"></i></a>
+            <div class="theme-toggle" id="themeBtn"><i class="bi bi-moon-stars fs-4" id="themeIcon"></i></div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <aside class="sidebar d-none d-md-flex">
+            <button class="btn btn-primary shadow-sm rounded-pill px-4 py-2 mb-4 w-100" onclick="openNewModal()">
+                <i class="bi bi-plus-lg me-2"></i>Criar
+            </button>
+            <h6 class="small fw-bold text-muted mb-3">MENU</h6>
+            <nav class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
+                    <i class="bi bi-people me-3"></i>Pacientes
+                </a>
+                <a href="contrato.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3">
+                    <i class="bi bi-file-earmark-text me-3"></i>Contratos
+                </a>
+            </nav>
+        </aside>
+
+        <main id="calendar"></main>
     </div>
 </div>
 
-<div class="d-flex">
-    <div class="sidebar d-none d-md-block shadow-sm">
-        <button class="btn btn-light shadow-sm border rounded-pill px-4 py-2 mb-4 w-100" onclick="openNewModal()">
-            <i class="bi bi-plus-lg me-2 text-primary"></i>Criar
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar" style="width: 280px; background: var(--sidebar-bg);">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold">Nathalli Ricco</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <button class="btn btn-primary w-100 rounded-pill mb-4" onclick="openNewModal()" data-bs-dismiss="offcanvas">
+            <i class="bi bi-plus-lg me-2"></i>Novo Agendamento
         </button>
-        <h6 class="small fw-bold text-muted">MENU</h6>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action border-0 bg-transparent">
-                <i class="bi bi-people me-2"></i>Pacientes
+            <a href="#" class="list-group-item list-group-item-action border-0 bg-transparent py-3">
+                <i class="bi bi-people me-3 fs-5"></i>Pacientes
             </a>
-            <a href="contrato.html" class="list-group-item list-group-item-action border-0 bg-transparent">
-                <i class="bi bi-file-earmark-text me-2"></i>Contratos
+            <a href="contrato.html" class="list-group-item list-group-item-action border-0 bg-transparent py-3">
+                <i class="bi bi-file-earmark-text me-3 fs-5"></i>Contratos
             </a>
         </div>
     </div>
-    <div class="flex-grow-1">
-        <div id="calendar"></div>
-    </div>
 </div>
 
-<div class="fab d-md-none" onclick="openNewModal()"><i class="bi bi-plus-lg fs-3"></i></div>
+<button class="fab d-md-none shadow" onclick="openNewModal()">
+    <i class="bi bi-plus-lg fs-2"></i>
+</button>
 
 <div class="modal fade" id="appointmentModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0">
-                <h5 class="modal-title">Agendamento</h5>
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Agendamento</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body pt-0">
+            <div class="modal-body">
                 <form id="appointmentForm">
                     <input type="hidden" id="eventID">
                     <div class="mb-4">
-                        <input type="text" id="patientName" class="form-control form-control-lg border-0 border-bottom rounded-0 px-0" placeholder="Nome do Paciente" required>
+                        <label class="small fw-bold text-muted mb-1">PACIENTE</label>
+                        <input type="text" id="patientName" class="form-control form-control-lg border-0 border-bottom rounded-0 px-0 bg-transparent" placeholder="Nome completo" required>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row g-3 mb-4">
                         <div class="col-6">
-                            <label class="small fw-bold text-muted">INÍCIO</label>
-                            <input type="datetime-local" id="appointmentStart" class="form-control border-0 px-0" required>
+                            <label class="small fw-bold text-muted mb-1">INÍCIO</label>
+                            <input type="datetime-local" id="appointmentStart" class="form-control border-0 border-bottom rounded-0 px-0 bg-transparent" required>
                         </div>
                         <div class="col-6">
-                            <label class="small fw-bold text-muted">FIM</label>
-                            <input type="datetime-local" id="appointmentEnd" class="form-control border-0 px-0" required>
+                            <label class="small fw-bold text-muted mb-1">FIM</label>
+                            <input type="datetime-local" id="appointmentEnd" class="form-control border-0 border-bottom rounded-0 px-0 bg-transparent" required>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="small fw-bold text-muted">COR</label>
-                        <select id="eventColor" class="form-select border-0 px-0">
-                            <option value="#1a73e8">Azul</option>
-                            <option value="#d50000">Vermelho</option>
-                            <option value="#33b679">Verde</option>
-                            <option value="#f4511e">Laranja</option>
+                        <label class="small fw-bold text-muted mb-1">CATEGORIA</label>
+                        <select id="eventColor" class="form-select border-0 border-bottom rounded-0 px-0 bg-transparent">
+                            <option value="#1a73e8">Azul (Consulta)</option>
+                            <option value="#d50000">Vermelho (Urgência)</option>
+                            <option value="#33b679">Verde (Retorno)</option>
+                            <option value="#f4511e">Laranja (Particular)</option>
                         </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-link text-danger d-none" id="btnDelete">Excluir</button>
-                <button type="submit" form="appointmentForm" class="btn btn-primary rounded-pill px-4">Salvar</button>
+                <button type="button" class="btn btn-outline-danger border-0 d-none" id="btnDelete">Excluir</button>
+                <button type="submit" form="appointmentForm" class="btn btn-primary px-5 rounded-pill">Salvar</button>
             </div>
         </div>
     </div>
@@ -181,7 +220,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const calendarEl = document.getElementById('calendar');
-    const modal = new bootstrap.Modal(document.getElementById('appointmentModal'));
+    const modalEl = document.getElementById('appointmentModal');
+    const modal = new bootstrap.Modal(modalEl);
     const form = document.getElementById('appointmentForm');
     const btnDelete = document.getElementById('btnDelete');
     const inputStart = document.getElementById('appointmentStart');
@@ -192,22 +232,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const themeIcon = document.getElementById('themeIcon');
     const savedTheme = localStorage.getItem('theme_nath') || 'light';
     document.body.setAttribute('data-theme', savedTheme);
-    themeIcon.className = savedTheme === 'light' ? 'bi bi-moon-stars fs-2' : 'bi bi-sun fs-2';
-
+    
     themeBtn.addEventListener('click', () => {
         const newTheme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
         document.body.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme_nath', newTheme);
-        themeIcon.className = newTheme === 'light' ? 'bi bi-moon-stars fs-2' : 'bi bi-sun fs-2';
+        themeIcon.className = newTheme === 'light' ? 'bi bi-moon-stars fs-4' : 'bi bi-sun fs-4';
     });
 
-    // --- AUTOMAÇÃO 1 HORA ---
-    inputStart.addEventListener('change', function() {
-        if (this.value) {
-            let startDate = new Date(this.value);
-            let endDate = new Date(startDate.getTime() + (60 * 60 * 1000));
-            const tzOffset = endDate.getTimezoneOffset() * 60000;
-            inputEnd.value = new Date(endDate - tzOffset).toISOString().slice(0, 16);
+    // --- AUTO-FIM (1 HORA) ---
+    inputStart.addEventListener('change', () => {
+        if (inputStart.value) {
+            let start = new Date(inputStart.value);
+            let end = new Date(start.getTime() + (60 * 60 * 1000));
+            inputEnd.value = new Date(end - (end.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
         }
     });
 
@@ -216,57 +254,46 @@ document.addEventListener('DOMContentLoaded', function() {
         initialView: window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek',
         locale: 'pt-br',
         nowIndicator: true,
+        allDaySlot: false,
         slotMinTime: '07:00:00',
-        slotMaxTime: '22:00:00',
+        slotMaxTime: '21:00:00',
+        height: '100%',
         headerToolbar: {
-            left: 'prev,next today',
+            left: window.innerWidth < 768 ? 'prev,next' : 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: window.innerWidth < 768 ? 'timeGridDay,listWeek' : 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia' },
+        buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', list: 'Lista' },
         selectable: true,
         editable: true,
-        titleFormat: { year: 'numeric', month: 'numeric', day: 'numeric' },
-        // Inicializa vazio, loadEventsFromGitHub vai preencher
         events: [], 
         select: (info) => openNewModal(info.startStr.slice(0, 16)),
         eventClick: (info) => editEvent(info.event),
-        eventDrop: () => updateStorage(),
-        eventResize: () => updateStorage()
+        eventDrop: updateStorage,
+        eventResize: updateStorage,
+        windowResize: () => {
+            calendar.changeView(window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek');
+        }
     });
     calendar.render();
 
-    // --- CARREGAR DO GITHUB (BLINDADO) ---
-    async function loadEventsFromGitHub() {
+    // --- SYNC GITHUB ---
+    async function loadEvents() {
         try {
-            // NOCACHE é fundamental para não ler dados velhos do navegador
-            const url = "https://azdevcoder.github.io/nathricco/dados/agendamentos.json?t=" + new Date().getTime();
-            const response = await fetch(url);
-            
-            if (response.ok) {
-                const events = await response.json();
-                
-                // Limpa o que tinha antes e coloca o que veio do GitHub
+            const url = "https://azdevcoder.github.io/nathricco/dados/agendamentos.json?t=" + Date.now();
+            const res = await fetch(url);
+            if (res.ok) {
+                const data = await res.json();
                 calendar.removeAllEvents();
-                calendar.addEventSource(events);
-                
-                // Sincroniza o localStorage para ficar igual ao GitHub
-                localStorage.setItem('appointments_nath', JSON.stringify(events));
-                console.log("Agenda sincronizada com GitHub!");
-            } else {
-                // Se não achou no GitHub, tenta o local como plano B
-                const localData = localStorage.getItem('appointments_nath');
-                if (localData) calendar.addEventSource(JSON.parse(localData));
+                calendar.addEventSource(data);
+                localStorage.setItem('appointments_nath', JSON.stringify(data));
             }
-        } catch (err) {
-            console.error("Erro ao carregar, usando backup local:", err);
-            const localData = localStorage.getItem('appointments_nath');
-            if (localData) calendar.addEventSource(JSON.parse(localData));
+        } catch (e) {
+            const local = localStorage.getItem('appointments_nath');
+            if (local) calendar.addEventSource(JSON.parse(local));
         }
     }
-
-    // Chama a carga assim que o calendário estiver pronto
-    loadEventsFromGitHub();
+    loadEvents();
 
     window.openNewModal = (date = '') => {
         form.reset();
@@ -287,10 +314,10 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.show();
     }
 
-    form.addEventListener('submit', (e) => {
+    form.onsubmit = (e) => {
         e.preventDefault();
         const id = document.getElementById('eventID').value;
-        const eventData = {
+        const data = {
             title: document.getElementById('patientName').value,
             start: inputStart.value,
             end: inputEnd.value,
@@ -299,21 +326,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (id) {
             const ev = calendar.getEventById(id);
-            ev.setProp('title', eventData.title);
-            ev.setProp('backgroundColor', eventData.backgroundColor);
-            ev.setStart(eventData.start);
-            ev.setEnd(eventData.end);
+            ev.setProp('title', data.title);
+            ev.setProp('backgroundColor', data.backgroundColor);
+            ev.setStart(data.start);
+            ev.setEnd(data.end);
         } else {
-            calendar.addEvent({ id: Date.now().toString(), ...eventData });
+            calendar.addEvent({ id: Date.now().toString(), ...data });
         }
         updateStorage();
         modal.hide();
-    });
+    };
 
     btnDelete.onclick = () => {
-        if (confirm('Excluir?')) {
-            const ev = calendar.getEventById(document.getElementById('eventID').value);
-            if(ev) ev.remove();
+        if (confirm('Excluir agendamento?')) {
+            calendar.getEventById(document.getElementById('eventID').value).remove();
             updateStorage();
             modal.hide();
         }
@@ -321,29 +347,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function updateStorage() {
         const events = calendar.getEvents().map(e => ({
-            id: e.id, 
-            title: e.title, 
-            start: e.startStr, 
-            end: e.endStr, 
-            backgroundColor: e.backgroundColor
+            id: e.id, title: e.title, start: e.startStr, end: e.endStr, backgroundColor: e.backgroundColor
         }));
-
         localStorage.setItem('appointments_nath', JSON.stringify(events));
-
         try {
             await fetch("https://nathricco.onrender.com/salvar-agenda", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(events)
             });
-        } catch (err) {
-            console.error("Erro na sincronização:", err);
-        }
+        } catch (e) { console.error("Sync error", e); }
     }
 });
 </script>
 </body>
 </html>
-
-
-
