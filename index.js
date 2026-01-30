@@ -7,7 +7,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Ajuste GITHUB_REPO no Render para: azdevcoder/nathricco
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "https://azdevcoder.github.io";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_REPO = process.env.GITHUB_REPO || "azdevcoder/nathricco"; 
@@ -23,7 +22,7 @@ app.use(express.json({ limit: "30mb" }));
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 
-// --- ROTA PARA CONTRATOS (CORRIGIDA) ---
+// --- ROTA PARA CONTRATOS ---
 app.post("/upload", async (req, res) => {
     try {
         const { nomeArquivo, conteudoBase64 } = req.body;
@@ -34,7 +33,6 @@ app.post("/upload", async (req, res) => {
         const path = `dados/${nomeArquivo}`;
         const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${encodeURIComponent(path)}`;
 
-        // 1) Checar se existe para pegar o SHA
         const getResp = await fetch(url, {
             headers: { Authorization: `token ${GITHUB_TOKEN}` }
         });
@@ -44,7 +42,6 @@ app.post("/upload", async (req, res) => {
             sha = getJson.sha;
         }
 
-        // 2) Upload
         const putResp = await fetch(url, {
             method: "PUT",
             headers: {
@@ -60,7 +57,8 @@ app.post("/upload", async (req, res) => {
         });
 
         if (putResp.ok) return res.json({ ok: true });
-        return res.status(500).json({ error: "Erro no GitHub" });
+        const errData = await putResp.json();
+        return res.status(500).json({ error: "Erro no GitHub", details: errData });
 
     } catch (err) {
         console.error(err);
@@ -68,7 +66,7 @@ app.post("/upload", async (req, res) => {
     }
 });
 
-// --- ROTA PARA SALVAR AGENDAMENTOS JSON ---
+// --- ROTA PARA AGENDAMENTOS (JSON) ---
 app.post("/salvar-agenda", async (req, res) => {
   try {
     const eventos = req.body; 
@@ -105,10 +103,10 @@ app.post("/salvar-agenda", async (req, res) => {
     });
 
     if (putResp.ok) {
-      return res.json({ ok: true, message: "Agenda sincronizada no GitHub" });
+      return res.json({ ok: true, message: "Agenda sincronizada" });
     } else {
       const errorJson = await putResp.json();
-      return res.status(500).json({ error: "Erro ao salvar no GitHub", details: errorJson });
+      return res.status(500).json({ error: "Erro no GitHub", details: errorJson });
     }
 
   } catch (err) {
