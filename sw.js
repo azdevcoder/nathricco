@@ -2,8 +2,8 @@ const cacheName = 'nath-agenda-v26';
 const assets = [
   './',
   './index.html',
-  './pacientes.html',
   './contrato.html',
+  './pacientes.html',
   './manifest.json',
   './calendar.png'
 ];
