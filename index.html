@@ -88,7 +88,7 @@
 
 <div class="header-top shadow-sm">
     <div class="d-flex align-items-center">
-        <i class="bi bi-file-earmark-text-fill text-primary fs-3 me-2"></i>
+        <i class="bi bi-calendar-check-fill text-primary fs-3 me-2"></i>
         <h5 class="mb-0 fw-bold">Agenda | <span class="text-secondary fw-normal">Nathalli Ricco</span></h5>
     </div>
     <div class="d-flex align-items-center gap-2">
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    // --- FUNÇÃO DE SALVAMENTO ÚNICA ---
+    // --- FUNÇÃO DE SALVAMENTO NO GITHUB ---
     async function updateStorage() {
         const events = calendar.getEvents().map(e => ({
             id: e.id, 
@@ -292,16 +292,21 @@ document.addEventListener('DOMContentLoaded', function() {
             backgroundColor: e.backgroundColor
         }));
 
+        // Backup local imediato
         localStorage.setItem('appointments_nath', JSON.stringify(events));
 
         try {
-            // MUDANÇA IMPORTANTE: Adicionei a rota
-            const response = await fetch("https://nathricco.onrender.com/upload", {
+            // Rota correta para agendamentos
+            const response = await fetch("https://nathricco.onrender.com/salvar-agenda", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(events)
             });
-            if (response.ok) console.log("Sincronizado com GitHub via Render!");
+            if (response.ok) {
+                console.log("Sincronizado com GitHub!");
+            } else {
+                console.error("Erro na resposta do servidor");
+            }
         } catch (err) {
             console.error("Erro na sincronização:", err);
         }
@@ -310,4 +315,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
