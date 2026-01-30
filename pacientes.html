@@ -113,6 +113,36 @@
             .content-area { padding: 15px; }
             .header-top h5 { font-size: 0.9rem; }
         }
+        <style>
+    /* ... (mantenha o restante igual) ... */
+
+    [data-theme="dark"] {
+        --bg-main: #121212;
+        --card-bg: #1e1e1e;
+        --text-main: #ffffff;
+        --border-color: #444;
+        --header-bg: #1e1e1e;
+        --sidebar-bg: #1e1e1e;
+    }
+    [data-theme="dark"] .text-primary {
+        color: #8ab4f8 !important; /* Azul mais claro para leitura no preto */
+    }
+
+    [data-theme="dark"] label, 
+    [data-theme="dark"] .small.fw-bold, 
+    [data-theme="dark"] h4, 
+    [data-theme="dark"] h5 {
+        color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .form-control, 
+    [data-theme="dark"] .form-select {
+        color: #ffffff !important;
+    }
+
+    [data-theme="dark"] .list-group-item-action {
+        color: #ffffff !important;
+    }
     </style>
 </head>
 <body data-theme="light">
