@@ -8,7 +8,16 @@
   "theme_color": "#1a73e8",
   "icons": [
     {
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+      "src": "https://fonts.gstatic.com/s/i/materialsymbolsoutlined/calendar_month/ Admiral/24px.svg",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://fonts.gstatic.com/s/i/materialsymbolsoutlined/calendar_month/Admiral/512px.svg",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
