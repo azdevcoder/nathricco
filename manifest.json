@@ -12,6 +12,12 @@
       "sizes": "48x48",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2370/2370264.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
