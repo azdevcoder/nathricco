@@ -1,9 +1,8 @@
-const CACHE_NAME = 'nath-ricco-v1';
+const CACHE_NAME = 'nath-ricco-v2';
 const ASSETS = [
-  '/nathricco/',
-  '/nathricco/index.html',
-  '/nathricco/pacientes.html',
-  '/nathricco/contrato.html',
+  './',
+  './index.html',
+  './calendar.png',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'
 ];
 
