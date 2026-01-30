@@ -1,23 +1,25 @@
-const cacheName = 'nath-agenda-v2';
+const cacheName = 'nath-agenda-v3'; // Subimos para v3
 const assets = [
   './',
   './index.html',
   './contrato.html',
-  './pacientes.html'
+  './pacientes.html',
+  './manifest.json' // Importante incluir o manifest no cache
 ];
 
 self.addEventListener('install', e => {
+  self.skipWaiting(); // Força o SW a ativar imediatamente
   e.waitUntil(
     caches.open(cacheName).then(cache => {
-      cache.addAll(assets);
+      return cache.addAll(assets);
     })
   );
 });
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(res => {
-      return res || fetch(e.request);
+    fetch(e.request).catch(() => {
+      return caches.match(e.request);
     })
   );
 });
