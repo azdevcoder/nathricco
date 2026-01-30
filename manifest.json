@@ -1,7 +1,7 @@
 {
   "name": "Nathalli Ricco Agenda",
-  "short_name": "Nath Ricco",
-  "description": "Sistema de Gestão e Agenda Nathalli Ricco",
+  "short_name": "Nath Agenda",
+  "description": "Sistema de Gestão Nathalli Ricco",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
