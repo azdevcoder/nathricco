@@ -37,6 +37,7 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
+            margin: 0;
         }
 
         .header-top {
@@ -81,6 +82,7 @@
             font-size: 1.1rem;
             font-weight: bold;
             transition: transform 0.2s;
+            cursor: pointer;
         }
 
         .btn-whatsapp:hover {
@@ -119,26 +121,25 @@
         document.body.setAttribute('data-theme', savedTheme);
 
         function compartilharContrato() {
-            const nome = document.getElementById('nomePaciente').value;
-            
-            // O link do contrato que o paciente deve acessar
-            const linkContrato = "https://azdevcoder.github.io/nathricco/contrato.html";
-            
-            // Monta a mensagem personalizada
-            let mensagem = `Olá! Segue o link para preenchimento e assinatura do seu contrato digital: ${linkContrato}`;
-            
-            if (nome) {
-                mensagem = `Olá ${nome}! Segue o link para preenchimento e assinatura do seu contrato digital: ${linkContrato}`;
+            try {
+                // Link do contrato
+                const linkContrato = "https://azdevcoder.github.io/nathricco/contrato.html";
+                
+                // Mensagem padrão (Removida a busca pelo elemento nomePaciente que não existia)
+                const mensagem = `Olá! Segue o link para preenchimento e assinatura do seu contrato digital: ${linkContrato}`;
+
+                // Encode para URL segura
+                const msgFinal = encodeURIComponent(mensagem);
+
+                // URL do WhatsApp (sem número abre a lista de contatos para escolher)
+                const urlWhatsApp = `https://api.whatsapp.com/send?text=${msgFinal}`;
+
+                // Abre em nova aba
+                window.open(urlWhatsApp, '_blank');
+            } catch (err) {
+                console.error("Erro ao abrir WhatsApp:", err);
+                alert("Ocorreu um erro ao tentar abrir o WhatsApp.");
             }
-
-            // Encode para URL
-            const msgFinal = encodeURIComponent(mensagem);
-
-            // O link 'api.whatsapp.com/send' sem número abre a lista de contatos
-            const urlWhatsApp = `https://api.whatsapp.com/send?text=${msgFinal}`;
-
-            // Abre em nova aba
-            window.open(urlWhatsApp, '_blank');
         }
     </script>
 </body>
