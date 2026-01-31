@@ -153,21 +153,25 @@
     <div class="offcanvas-header border-bottom">
         <h5 class="offcanvas-title fw-bold" style="color:#ffffff">Nathalli Ricco</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+        
     </div>
     <div class="offcanvas-body">
         <button class="btn btn-primary w-100 rounded-pill mb-4" onclick="openNewModal()" data-bs-dismiss="offcanvas">
             <i class="bi bi-plus-lg me-2"></i>Novo Agendamento
         </button>
         <div class="list-group list-group-flush">
-            <a href="index.html" class="list-group-item list-group-item-action border-0 bg-transparent py-3">
-                <i class="bi bi-calendar-check me-3 fs-5"></i>Agenda
-            </a>
-            <a href="pacientes.html" class="list-group-item list-group-item-action border-0 bg-transparent py-3">
-                <i class="bi bi-people me-3 fs-5"></i>Pacientes
-            </a>
-            <a href="contrato.html" class="list-group-item list-group-item-action border-0 bg-transparent py-3">
-                <i class="bi bi-file-earmark-text me-3 fs-5"></i>Contratos
-            </a>
+                <a href="index.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
+                <i class="bi bi-calendar-check me-3"></i>Agenda
+                </a>
+                <!-- <a href="pacientes.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
+                    <i class="bi bi-people me-3"></i>Pacientes
+                </a> -->
+                <a href="lista_contratos.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3">
+                    <i class="bi bi-file-earmark-text me-3"></i>Contratos
+                </a>
+                <a href="enviar_contrato.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3" target="_blank">
+                    <i class="bi bi-send me-3"></i>Enviar Contrato
+                </a>
         </div>
     </div>
 </div>
@@ -359,5 +363,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
 
