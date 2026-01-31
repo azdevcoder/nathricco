@@ -3,18 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nathalli Ricco | Contratos</title>
+    <title>Nathalli Ricco | Agenda</title>
     
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json?v=30">
     <meta name="theme-color" content="#1a73e8">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/png" href="calendar.png">
+    <meta name="apple-mobile-web-app-title" content="Nath Agenda">
     <link rel="apple-touch-icon" href="calendar.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js?v=30')
+            .then(reg => console.log("PWA Ativo:", reg.scope))
+            .catch(err => console.log("Erro PWA:", err));
+        });
+      }
+    </script>
     <style>
         :root {
             --google-blue: #1a73e8;
@@ -253,3 +264,4 @@
     </script>
 </body>
 </html>
+
