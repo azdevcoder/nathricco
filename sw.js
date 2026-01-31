@@ -1,4 +1,7 @@
-const CACHE_NAME = 'nath-ricco-v15'; // Mudei a versão para forçar atualização
+// sw.js
+const CACHE_NAME = 'nath-ricco-v16'; 
+
+// Isso é apenas uma lista de endereços, não uma pasta física.
 const ASSETS = [
   './',
   './index.html',
@@ -13,7 +16,7 @@ const ASSETS = [
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Usamos return para garantir que o cache termine antes da instalação
+      // O navegador lê a lista acima e baixa um por um
       return cache.addAll(ASSETS);
     })
   );
