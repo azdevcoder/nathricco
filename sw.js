@@ -1,35 +1,34 @@
-const CACHE_NAME = "nathalli-pwa-v1";
-const FILES_TO_CACHE = [
-  "./",
-  "./index.html",
-  "./contrato.html",
-  "./lista_contratos.html",
-  "./enviar_contrato.html",
-  "./calendar.png",
-  "./manifest.json"
+const cacheName = 'nath-agenda-v31';
+const assets = [
+  './',
+  './index.html',
+  './contrato.html',
+  './pacientes.html',
+  './lista_contratos.html',
+  './enviar_contrato.html',
+  './manifest.json',
+  './calendar.png'
 ];
 
-// Instala
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
-  );
+self.addEventListener('install', e => {
   self.skipWaiting();
-});
-
-// Ativa
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(key => key !== CACHE_NAME && caches.delete(key)))
-    )
+  e.waitUntil(
+    caches.open(cacheName).then(cache => cache.addAll(assets))
   );
-  self.clients.claim();
 });
 
-// Fetch
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== cacheName).map(key => caches.delete(key))
+      );
+    })
+  );
+});
+
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
   );
 });
