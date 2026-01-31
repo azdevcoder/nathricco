@@ -1,29 +1,23 @@
 {
-  "name": "Nathalli Ricco Agenda",
-  "short_name": "Nath Ricco",
-  "description": "Sistema de Gestão e Agenda Nathalli Ricco",
+  "name": "Agenda Nathalli Ricco",
+  "short_name": "Agenda",
+  "description": "Agenda e contratos digitais",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1a73e8",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "calendar.png",  
+      "src": "calendar.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
       "src": "calendar.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "calendar.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "type": "image/png"
     }
   ]
 }
