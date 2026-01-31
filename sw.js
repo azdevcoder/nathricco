@@ -1,13 +1,13 @@
 const CACHE_NAME = 'nath-ricco-v11'; // Sempre mude a versão ao atualizar
 const ASSETS = [
   './',
-  './index.html',
-  './pacientes.html',
-  './contrato.html',
-  './lista_contratos.html',
-  './enviar_contrato.html',
-  './calendar.png',
-  './manifest.json',
+  'index.html',
+  'pacientes.html',
+  'contrato.html',
+  'lista_contratos.html',
+  'enviar_contrato.html',
+  'calendar.png',
+  'manifest.json',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
   'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css',
   'https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css'
