@@ -18,11 +18,11 @@
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log("PWA: Registrado!"))
-            .catch(err => console.log("PWA: Erro", err));
+            .then(reg => console.log("SW registrado com sucesso!"))
+            .catch(err => console.log("Falha ao registrar SW:", err));
         });
       }
-    </script>    
+    </script>
     <style>
         :root {
             --google-blue: #1a73e8;
@@ -353,6 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
 
 
