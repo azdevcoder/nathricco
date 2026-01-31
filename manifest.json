@@ -1,16 +1,16 @@
 {
   "short_name": "Nathalli Ricco",
   "name": "Nathalli Ricco | Gestão",
-{
+  "description": "Sistema de Gestão e Agenda",
   "icons": [
     {
-      "src": "calendar.png?v=4",
+      "src": "calendar.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "calendar.png?v=4",
+      "src": "calendar.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
@@ -19,5 +19,6 @@
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1a73e8"
+  "theme_color": "#1a73e8",
+  "scope": "./"
 }
