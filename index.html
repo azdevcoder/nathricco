@@ -21,7 +21,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js')
+          navigator.serviceWorker.register('./sw.js?v=30')
             .then(reg => console.log("PWA Ativo:", reg.scope))
             .catch(err => console.log("Erro PWA:", err));
         });
@@ -119,7 +119,6 @@
         </div>
         <div class="d-flex align-items-center gap-1">
             <a href="index.html" class="theme-toggle"><i class="bi bi-house fs-4"></i></a>
-            <!-- <a href="pacientes.html" class="theme-toggle"><i class="bi bi-people fs-4"></i></a> -->
             <a href="lista_contratos.html" class="theme-toggle"><i class="bi bi-file-earmark-text fs-4"></i></a>
             <div class="theme-toggle" id="themeBtn"><i class="bi bi-moon-stars fs-4" id="themeIcon"></i></div>
         </div>
@@ -134,9 +133,6 @@
                 <a href="index.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
                 <i class="bi bi-calendar-check me-3"></i>Agenda
                 </a>
-                <!-- <a href="pacientes.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
-                    <i class="bi bi-people me-3"></i>Pacientes
-                </a> -->
                 <a href="lista_contratos.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3">
                     <i class="bi bi-file-earmark-text me-3"></i>Contratos
                 </a>
@@ -152,9 +148,8 @@
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar" style="width: 280px; background: var(--sidebar-bg);">
     <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-bold" style="color:#ffffff">Nathalli Ricco</h5>
+        <h5 class="offcanvas-title fw-bold">Nathalli Ricco</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
-        
     </div>
     <div class="offcanvas-body">
         <button class="btn btn-primary w-100 rounded-pill mb-4" onclick="openNewModal()" data-bs-dismiss="offcanvas">
@@ -164,9 +159,6 @@
                 <a href="index.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
                 <i class="bi bi-calendar-check me-3"></i>Agenda
                 </a>
-                <!-- <a href="pacientes.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
-                    <i class="bi bi-people me-3"></i>Pacientes
-                </a> -->
                 <a href="lista_contratos.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3">
                     <i class="bi bi-file-earmark-text me-3"></i>Contratos
                 </a>
@@ -364,11 +356,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
