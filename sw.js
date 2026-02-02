@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nath-agenda-v30';
+const CACHE_NAME = 'nath-agenda-v1';
 const assets = [
   "./",
   "./index.html",
