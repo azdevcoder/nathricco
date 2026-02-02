@@ -21,7 +21,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js?v=3')
+          navigator.serviceWorker.register('./sw.js?v=4')
             .then(reg => console.log("PWA Ativo:", reg.scope))
             .catch(err => console.log("Erro PWA:", err));
         });
@@ -393,3 +393,4 @@ window.openNewModal = (date = '') => {
 </script>
 </body>
 </html>
+
