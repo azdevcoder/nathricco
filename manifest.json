@@ -1,7 +1,7 @@
 {
   "name": "Nathalli Ricco Agenda",
   "short_name": "Nath Agenda",
-  "description": "Sistema de Agenda e Contratos Digital",
+  "description": "Sistema de Gestão de Agenda e Contratos",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -10,12 +10,14 @@
     {
       "src": "calendar.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "calendar.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
