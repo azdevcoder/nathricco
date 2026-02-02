@@ -21,7 +21,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js?v=4')
+          navigator.serviceWorker.register('./sw.js?v=5')
             .then(reg => console.log("PWA Ativo:", reg.scope))
             .catch(err => console.log("Erro PWA:", err));
         });
@@ -170,10 +170,10 @@
         <main id="calendar"></main>
     </div>
 
-    <footer>
+   <!-- <footer>
         <p>Desenvolvido por: &copy; 2026 AzDev Coder. Todos os direitos reservados.</p>
         <p>AzDev Coder CNPJ: 58.964.559/0001-11 Maringá-PR</p>
-    </footer>
+    </footer> -->
 </div>
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar" style="width: 280px; background: var(--sidebar-bg);">
@@ -393,4 +393,5 @@ window.openNewModal = (date = '') => {
 </script>
 </body>
 </html>
+
 
