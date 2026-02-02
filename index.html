@@ -21,7 +21,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js?v=1')
+          navigator.serviceWorker.register('./sw.js?v=2')
             .then(reg => console.log("PWA Ativo:", reg.scope))
             .catch(err => console.log("Erro PWA:", err));
         });
@@ -356,4 +356,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
