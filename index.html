@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
     selectServico.addEventListener('change', calcularFim);
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek',
+        initialView: window.innerWidth < 768 ?  'timeGridDay' : 'timeGridWeek',
         locale: 'pt-br',
         nowIndicator: true,
         allDaySlot: false,
@@ -300,8 +300,8 @@ document.addEventListener('DOMContentLoaded', function() {
         unselectAuto: true,
         longPressDelay: 50, // Permite clicar e mover com facilidade
         headerToolbar: {
-            left: window.innerWidth < 768 ? 'prev,next' : 'prev,next today',
-            center: 'title',
+            left: window.innerWidth < 768 ? 'prev,next' : 'prev,next',
+            center: 'title', 
             right: 'today,dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
         buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', list: 'Lista' },
@@ -402,7 +402,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     btnDelete.onclick = () => {
         const id = document.getElementById('eventID').value;
-        if (id && confirm('Excluir agendamento?')) {
+        const patientName = document.getElementById('patientName').value;
+        if (id && confirm(`Excluir agendamento de ${patientName}?`)) {
             const ev = calendar.getEventById(id);
             if (ev) {
                 ev.remove();
@@ -422,4 +423,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
