@@ -123,6 +123,8 @@
         .fc .fc-timegrid-slot { height: 3em !important; }
         .fc-event-draggable { cursor: move; }
         .fc-v-event .fc-event-resizer { height: 15px; background: rgba(0,0,0,0.1); }
+
+        .offcanvas-title { color: #ffffff !important; }
     </style>
 </head>
 <body data-theme="light">
@@ -293,6 +295,8 @@ document.addEventListener('DOMContentLoaded', function() {
         titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' },
         selectable: true,
         editable: true,
+        unselectAuto: true,
+        longPressDelay: 50, // Permite clicar e mover com facilidade
         headerToolbar: {
             left: window.innerWidth < 768 ? 'prev,next' : 'prev,next today',
             center: 'title',
@@ -304,12 +308,11 @@ document.addEventListener('DOMContentLoaded', function() {
             calendar.unselect();
         },
         eventClick: (info) => editEvent(info.event),
-        eventDrop: () => updateStorage(),
-        eventResize: () => updateStorage()
+        eventDrop: () => updateStorage(), // Salva ao mover
+        eventResize: () => updateStorage() // Salva ao redimensionar
     });
     calendar.render();
 
-    // Lógica Unificada de Salvamento Local
     function updateStorage() {
         const events = calendar.getEvents().map(e => ({
             id: e.id, 
@@ -322,7 +325,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const stringData = JSON.stringify(events);
         localStorage.setItem('appointments_nath', stringData);
 
-        // Sincronização em background com o servidor (Opcional)
         fetch("https://nathricco.onrender.com/salvar-agenda", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -353,7 +355,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     loadEvents();
 
-    // Modal e Formuário Unificados
     window.openNewModal = (date = '') => {
         form.reset();
         document.getElementById('eventID').value = '';
