@@ -11,7 +11,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Nath Agenda">
-    <link rel="apple-touch-icon" href="calendar.png">
+    <link rel="apple-touch-icon" href="agenda.png">
+    <link rel="icon" type="image/png" href="calendar.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
@@ -20,7 +21,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js')
+          navigator.serviceWorker.register('./sw.js?v=3')
             .then(reg => console.log("PWA Ativo:", reg.scope))
             .catch(err => console.log("Erro PWA:", err));
         });
@@ -29,27 +30,45 @@
     <style>
         :root {
             --google-blue: #1a73e8;
+            --border-color: #dadce0;
             --bg-main: #ffffff;
             --text-main: #3c4043;
-            --card-bg: #f8f9fa;
-            --border-color: #dadce0;
+            --sidebar-bg: #ffffff;
+            --header-bg: #ffffff;
+            --modal-bg: #ffffff;
+            --fc-today-bg-color: #e8f0fe; 
         }
 
         [data-theme="dark"] {
             --bg-main: #121212;
             --text-main: #e8eaed;
-            --card-bg: #1e1e1e;
             --border-color: #3c4043;
+            --sidebar-bg: #1e1e1e;
+            --header-bg: #1e1e1e;
+            --modal-bg: #2d2d2d;
+            --fc-today-bg-color: rgba(26, 115, 232, 0.15);
+            color-scheme: dark;
         }
 
         body { 
             background-color: var(--bg-main); 
             color: var(--text-main);
-            font-family: 'Roboto', sans-serif;
-            height: 100vh;
+            font-family: 'Roboto', sans-serif; 
+            overflow: hidden; 
+            transition: background 0.3s ease;
+        }
+
+        .app-container { display: flex; height: 100vh; flex-direction: column; }
+        .main-content { display: flex; flex: 1; overflow: hidden; }
+        #calendar { flex: 1; padding: 10px; background: var(--bg-main); }
+
+        .sidebar {
+            width: 260px;
+            border-right: 1px solid var(--border-color);
+            background: var(--sidebar-bg);
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            margin: 0;
         }
 
         .header-top {
@@ -59,113 +78,344 @@
             justify-content: space-between;
             padding: 0 16px;
             border-bottom: 1px solid var(--border-color);
+            background: var(--header-bg);
+            z-index: 1030;
         }
 
-        .main-content {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .send-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 40px;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .wa-icon {
-            font-size: 4rem;
-            color: #25D366;
-            margin-bottom: 20px;
-        }
-
-        .btn-whatsapp {
-            background-color: #25D366;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #20ba5a;
-            color: white;
-            transform: scale(1.05);
-        }
-
-        h4, h5, h6 { color: var(--text-main) !important; }
-
-        .text-muted { color: var(--text-muted) !important; }
-
+        .fc { --fc-border-color: var(--border-color); font-size: 0.9rem; }
+        .fc .fc-toolbar-title { font-size: 1.2rem; font-weight: 600; }
+        .fc .fc-button-primary { background-color: var(--google-blue); border: none; text-transform: capitalize; }
         
+        [data-theme="dark"] .text-muted { color: rgba(255, 255, 255, 0.7) !important; }
+        [data-theme="dark"] .text-inherit, [data-theme="dark"] .list-group-item { color: #ffffff !important; }
+
+        .fab {
+            position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px;
+            border-radius: 16px; background-color: var(--google-blue);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; cursor: pointer; color: white; border: none;
+        }
+
+        .theme-toggle { cursor: pointer; padding: 10px; border-radius: 50%; color: var(--text-main); }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            background: var(--header-bg);
+            padding: 10px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        footer p { margin: 0; color: var(--text-main); }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .fc .fc-toolbar { flex-direction: column; gap: 10px; }
+            .fc .fc-toolbar-title { font-size: 1rem; }
+        }
+        
+        .fc-timegrid-slot, .fc-daygrid-day {
+            cursor: pointer;
+            -webkit-tap-highlight-color: rgba(26, 115, 232, 0.1);
+        }
+
+        .fc-event { cursor: pointer; }
+        .fc .fc-timegrid-slot { height: 3em !important; }
+        .fc-event-draggable { cursor: move; }
+        .fc-v-event .fc-event-resizer { height: 15px; background: rgba(0,0,0,0.1); }
     </style>
 </head>
 <body data-theme="light">
 
+<div class="app-container">
     <header class="header-top shadow-sm">
         <div class="d-flex align-items-center">
-            <a href="index.html" class="btn border-0 text-inherit me-2"><i class="bi bi-arrow-left fs-4"></i></a>
-            <h5 class="mb-0 fw-bold">Enviar Contrato</h5>
+            <button class="btn d-md-none me-2 text-inherit" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            <i class="bi bi-calendar-check-fill text-primary fs-4 me-2"></i>
+            <h5 class="mb-0 fw-bold d-none d-sm-block">Agenda | <span class="text-secondary fw-normal">Nathalli Ricco</span></h5>
+        </div>
+        <div class="d-flex align-items-center gap-1">
+            <a href="index.html" class="theme-toggle"><i class="bi bi-house fs-4"></i></a>
+            <a href="lista_contratos.html" class="theme-toggle"><i class="bi bi-file-earmark-text fs-4"></i></a>
+            <div class="theme-toggle" id="themeBtn"><i class="bi bi-moon-stars fs-4" id="themeIcon"></i></div>
         </div>
     </header>
 
-    <main class="main-content">
-        <div class="send-card">
-            <i class="bi bi-whatsapp wa-icon"></i>
-            <h3 class="fw-bold mb-3">Enviar via WhatsApp</h3>
-            <p class="text-muted mb-4">
-                Ao clicar no botão abaixo, o WhatsApp abrirá para você escolher o paciente e enviar o link do contrato para assinatura.
-            </p>
-            
-            <button onclick="compartilharContrato()" class="btn btn-whatsapp w-100 rounded-pill shadow">
-                <i class="bi bi-send-fill me-2"></i> ENVIAR AGORA
+    <div class="main-content">
+        <aside class="sidebar d-none d-md-flex">
+            <button class="btn btn-primary shadow-sm rounded-pill px-4 py-2 mb-4 w-100" onclick="openNewModal()">
+                <i class="bi bi-plus-lg me-2"></i>Criar
             </button>
+            <nav class="list-group list-group-flush">
+                <a href="index.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
+                <i class="bi bi-calendar-check me-3"></i>Agenda
+                </a>
+                <a href="lista_contratos.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3">
+                    <i class="bi bi-file-earmark-text me-3"></i>Contratos
+                </a>
+                <a href="enviar_contrato.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3" target="_blank">
+                    <i class="bi bi-send me-3"></i>Enviar Contrato
+                </a>
+            </nav>
+        </aside>
+
+        <main id="calendar"></main>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar" style="width: 280px; background: var(--sidebar-bg);">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold">Nathalli Ricco</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <button class="btn btn-primary w-100 rounded-pill mb-4" onclick="openNewModal()" data-bs-dismiss="offcanvas">
+            <i class="bi bi-plus-lg me-2"></i>Novo Agendamento
+        </button>
+        <div class="list-group list-group-flush">
+                <a href="index.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3 mb-1">
+                <i class="bi bi-calendar-check me-3"></i>Agenda
+                </a>
+                <a href="lista_contratos.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3">
+                    <i class="bi bi-file-earmark-text me-3"></i>Contratos
+                </a>
+                <a href="enviar_contrato.html" class="list-group-item list-group-item-action border-0 bg-transparent rounded-3" target="_blank">
+                    <i class="bi bi-send me-3"></i>Enviar Contrato
+                </a>
         </div>
-    </main>
-<footer>
-<p>Desenvolvido por: &copy; 2026 AzDev Coder. Todos os direitos reservados.</p>
-<p>AzDev Coder CNPJ: 58.964.559/0001-11 Maringá-PR    </p>
-</footer>
-    <script>
-        // Aplicar tema salvo
-        const savedTheme = localStorage.getItem('theme_nath') || 'light';
-        document.body.setAttribute('data-theme', savedTheme);
+    </div>
+</div>
 
-        function compartilharContrato() {
-            try {
-                // Link do contrato
-                const linkContrato = "https://azdevcoder.github.io/nathricco/contrato.html";
-                
-                // Mensagem padrão (Removida a busca pelo elemento nomePaciente que não existia)
-                const mensagem = `Olá! Segue o link para preenchimento e assinatura do seu contrato digital: ${linkContrato}`;
+<button class="fab d-md-none shadow" onclick="openNewModal()">
+    <i class="bi bi-plus-lg fs-2"></i>
+</button>
 
-                // Encode para URL segura
-                const msgFinal = encodeURIComponent(mensagem);
+<div class="modal fade" id="appointmentModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">Agendamento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="appointmentForm">
+                    <input type="hidden" id="eventID">
+                    <div class="mb-4">
+                        <label class="small fw-bold text-muted mb-1">PACIENTE</label>
+                        <input type="text" id="patientName" class="form-control form-control-lg border-0 border-bottom rounded-0 px-0 bg-transparent" placeholder="Nome completo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small fw-bold text-muted mb-1">CATEGORIA</label>
+                        <select id="eventColor" class="form-select border-0 border-bottom rounded-0 px-0 bg-transparent">
+                            <option value="" data-duration="">Selecione um serviço</option>
+                            <option value="#1a73e8" data-duration="30">Desing</option>
+                            <option value="#1a73e8" data-duration="60">Desing c/ Henna</option>
+                            <option value="#1a73e8" data-duration="60">Brow Lamination</option>
+                            <option value="#1a73e8" data-duration="60">Reconstrução</option>
+                            <option value="#33b679" data-duration="80">Drenagem</option>
+                            <option value="#33b679" data-duration="80">Massagem Relaxante</option>
+                            <option value="#f4511e" data-duration="120">Protocolo Corporal</option>
+                        </select>
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <label class="small fw-bold text-muted mb-1">INÍCIO</label>
+                            <input type="datetime-local" id="appointmentStart" class="form-control border-0 border-bottom rounded-0 px-0 bg-transparent" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="small fw-bold text-muted mb-1">FIM</label>
+                            <input type="datetime-local" id="appointmentEnd" class="form-control border-0 border-bottom rounded-0 px-0 bg-transparent" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-danger border-0 d-none" id="btnDelete">Excluir</button>
+                <button type="submit" form="appointmentForm" class="btn btn-primary px-5 rounded-pill">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                // URL do WhatsApp (sem número abre a lista de contatos para escolher)
-                const urlWhatsApp = `https://api.whatsapp.com/send?text=${msgFinal}`;
+<div id="toastSuccess" class="alert alert-success shadow-lg" style="display:none; position: fixed; top: 20px; right: 20px; z-index: 9999; border-radius: 50px; padding: 10px 30px;">
+    <i class="bi bi-check-circle-fill me-2"></i> Salvo com sucesso!
+</div>
 
-                // Abre em nova aba
-                window.open(urlWhatsApp, '_blank');
-            } catch (err) {
-                console.error("Erro ao abrir WhatsApp:", err);
-                alert("Ocorreu um erro ao tentar abrir o WhatsApp.");
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    const modalEl = document.getElementById('appointmentModal');
+    const modal = new bootstrap.Modal(modalEl);
+    const form = document.getElementById('appointmentForm');
+    const btnDelete = document.getElementById('btnDelete');
+    const inputStart = document.getElementById('appointmentStart');
+    const inputEnd = document.getElementById('appointmentEnd');
+    const selectServico = document.getElementById('eventColor');
+
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const savedTheme = localStorage.getItem('theme_nath') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+    
+    themeBtn.addEventListener('click', () => {
+        const newTheme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        document.body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme_nath', newTheme);
+        themeIcon.className = newTheme === 'light' ? 'bi bi-moon-stars fs-4' : 'bi bi-sun fs-4';
+    });
+
+    function calcularFim() {
+        if (inputStart.value) {
+            const selectedOption = selectServico.options[selectServico.selectedIndex];
+            const duracaoEmMinutos = parseInt(selectedOption.getAttribute('data-duration')) || 60;
+            let start = new Date(inputStart.value);
+            let end = new Date(start.getTime() + (duracaoEmMinutos * 60 * 1000));
+            inputEnd.value = new Date(end - (end.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+        }
+    }
+
+    inputStart.addEventListener('change', calcularFim);
+    selectServico.addEventListener('change', calcularFim);
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek',
+        locale: 'pt-br',
+        nowIndicator: true,
+        allDaySlot: false,
+        slotMinTime: '07:00:00',
+        slotMaxTime: '21:00:00',
+        height: '100%',
+        titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' },
+        selectable: true,
+        editable: true,
+        headerToolbar: {
+            left: window.innerWidth < 768 ? 'prev,next' : 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        buttonText: { today: 'Hoje', month: 'Mês', week: 'Semana', day: 'Dia', list: 'Lista' },
+        select: (info) => {
+            openNewModal(info.startStr.slice(0, 16));
+            calendar.unselect();
+        },
+        eventClick: (info) => editEvent(info.event),
+        eventDrop: () => updateStorage(),
+        eventResize: () => updateStorage()
+    });
+    calendar.render();
+
+    // Lógica Unificada de Salvamento Local
+    function updateStorage() {
+        const events = calendar.getEvents().map(e => ({
+            id: e.id, 
+            title: e.title, 
+            start: e.startStr, 
+            end: e.endStr, 
+            backgroundColor: e.backgroundColor
+        }));
+        
+        const stringData = JSON.stringify(events);
+        localStorage.setItem('appointments_nath', stringData);
+
+        // Sincronização em background com o servidor (Opcional)
+        fetch("https://nathricco.onrender.com/salvar-agenda", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: stringData
+        }).catch(e => console.log("Servidor offline, salvo localmente."));
+    }
+
+    async function loadEvents() {
+        const localData = localStorage.getItem('appointments_nath');
+        if (localData) {
+            calendar.removeAllEvents();
+            calendar.addEventSource(JSON.parse(localData));
+        }
+
+        try {
+            const res = await fetch("https://azdevcoder.github.io/nathricco/dados/agendamentos.json?t=" + Date.now());
+            if (res.ok) {
+                const serverData = await res.json();
+                if (!localData || JSON.stringify(serverData) !== localData) {
+                    calendar.removeAllEvents();
+                    calendar.addEventSource(serverData);
+                    localStorage.setItem('appointments_nath', JSON.stringify(serverData));
+                }
+            }
+        } catch (e) {
+            console.log("Usando dados do cache local.");
+        }
+    }
+    loadEvents();
+
+    // Modal e Formuário Unificados
+    window.openNewModal = (date = '') => {
+        form.reset();
+        document.getElementById('eventID').value = '';
+        inputStart.value = date || new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        calcularFim();
+        btnDelete.classList.add('d-none');
+        modal.show();
+    };
+
+    function editEvent(event) {
+        document.getElementById('eventID').value = event.id;
+        document.getElementById('patientName').value = event.title.split(' - ')[0];
+        inputStart.value = event.startStr.slice(0, 16);
+        inputEnd.value = event.endStr ? event.endStr.slice(0, 16) : '';
+        document.getElementById('eventColor').value = event.backgroundColor;
+        btnDelete.classList.remove('d-none');
+        modal.show();
+    }
+
+    form.onsubmit = (e) => {
+        e.preventDefault();
+        const id = document.getElementById('eventID').value;
+        const servicoNome = selectServico.options[selectServico.selectedIndex].text;
+        
+        const eventData = {
+            id: id || "ID-" + Date.now(),
+            title: document.getElementById('patientName').value + " - " + servicoNome,
+            start: inputStart.value,
+            end: inputEnd.value,
+            backgroundColor: selectServico.value
+        };
+
+        if (id) {
+            const ev = calendar.getEventById(id);
+            if (ev) ev.remove();
+        }
+        
+        calendar.addEvent(eventData);
+        modal.hide();
+        mostrarNotificacao();
+        updateStorage(); 
+    };
+
+    btnDelete.onclick = () => {
+        const id = document.getElementById('eventID').value;
+        if (id && confirm('Excluir agendamento?')) {
+            const ev = calendar.getEventById(id);
+            if (ev) {
+                ev.remove();
+                modal.hide();
+                mostrarNotificacao();
+                updateStorage();
             }
         }
-    </script>
+    };
+
+    function mostrarNotificacao() {
+        const toast = document.getElementById('toastSuccess');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+});
+</script>
 </body>
 </html>
-
-
-
-
