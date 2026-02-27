@@ -12,8 +12,6 @@
     "express": "^4.18.2"
   }
 
-}
-
 {
   "name": "api-contratos-nathricco",
   "version": "1.0.0",
@@ -27,3 +25,6 @@
     "express": "^4.18.2"
   }
 }
+}
+
+
