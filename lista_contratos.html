@@ -227,7 +227,7 @@
 
         async function loadContracts() {
             try {
-                const response = await fetch("https://nathricco.onrender.com/listar-contratos");
+                const response = await fetch("https://nathricco.onrender.com/contratos-assinados-nath");
                 const files = await response.json();
                 grid.innerHTML = '';
 
@@ -264,6 +264,7 @@
     </script>
 </body>
 </html>
+
 
 
 
