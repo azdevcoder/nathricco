@@ -55,7 +55,7 @@ app.post('/upload', async (req, res) => {
 // ==========================================
 // ROTA 2: LISTAR CONTRATOS (A NOVA ROTA!)
 // ==========================================
-app.get('/listar-contratos', async (req, res) => {
+app.get('/contratos-assinados-nath', async (req, res) => {
   try {
     // Aponta para a pasta onde salvamos os PDFs
     const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/contratos-assinados-nath`;
