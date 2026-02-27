@@ -390,8 +390,8 @@
   <script>
     const { jsPDF } = window.jspdf;
     
-    // Substitua pelo número da Nathalli
-    const CONTATO_WHATSAPP = '5544999999999';
+    // Contato exato configurado para a Nathalli
+    const CONTATO_WHATSAPP = '5544999792806';
 
     const form = document.getElementById('formContrato');
     const stepForm = document.getElementById('step-form');
@@ -559,14 +559,14 @@
       return doc;
     }
 
-    // Função para converter Blob para Base64
+    // Função que converte o Blob do PDF para Base64
     function blobParaBase64(blob) {
       return new Promise(function(resolve, reject) {
         const reader = new FileReader();
         reader.onloadend = function() {
           const res = reader.result;
           if (typeof res === 'string') {
-            resolve(res.split(',')[1]); // Pega apenas a string Base64
+            resolve(res.split(',')[1]); 
           } else {
             reject(new Error('Falha ao ler o arquivo.'));
           }
@@ -574,6 +574,11 @@
         reader.onerror = reject;
         reader.readAsDataURL(blob);
       });
+    }
+
+    // Função para gerar um hash único e evitar erro 409 no GitHub
+    function gerarHash5() {
+      return Math.floor(10000 + Math.random() * 90000);
     }
 
     form.addEventListener('submit', (e) => {
@@ -608,7 +613,6 @@
       stepPreview.style.display = 'none';
     });
 
-    // Lógica principal de geração e envio via Render
     btnAssinar.addEventListener('click', async () => {
       btnAssinar.disabled = true;
       btnAssinar.textContent = 'Gerando contrato e salvando...';
@@ -617,7 +621,10 @@
       try {
         const doc = gerarPDF(dadosGlobais);
         const pdfBlob = doc.output('blob');
-        const nomeArquivo = `Contrato_Nathalli_Ricco_${dadosGlobais.nome.replace(/\s+/g, '_')}.pdf`;
+        
+        // Aplicação do Hash para garantir nome de arquivo único
+        const hash = gerarHash5();
+        const nomeArquivo = `${hash}_Contrato_Nathalli_Ricco_${dadosGlobais.nome.replace(/\s+/g, '_')}.pdf`;
 
         // 1. Baixar no dispositivo
         const url = URL.createObjectURL(pdfBlob);
@@ -628,10 +635,9 @@
 
         statusList.innerHTML += `<div class="status-item status-ok">✓ PDF gerado e baixado no dispositivo.</div>`;
 
-        // 2. Enviar para a sua API no Render
+        // 2. Enviar para a API no Render
         try {
           const base64PDF = await blobParaBase64(pdfBlob);
-          // Adiciona a pasta "contratos-assinados-nath/" na frente do nome
           const caminhoGitHub = `contratos-assinados-nath/${nomeArquivo}`;
 
           const renderResponse = await fetch('https://nathricco.onrender.com/upload', {
