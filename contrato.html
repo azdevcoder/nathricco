@@ -1,297 +1,636 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nathalli Ricco | Contrato</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contrato - Nathalli Ricco Estética</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: rgba(30, 30, 30, 0.8);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      padding: 16px;
+      border-bottom: 1px solid #333;
+    }
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .header-text h1 {
+      font-size: 18px;
+      margin: 0;
+      color: #d4af37; /* Dourado/Bronze elegante */
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .header-text p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: #a0a0a0;
+    }
+
+    main {
+      flex: 1;
+      padding: 24px 16px 32px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .card {
+      background: #1e1e1e;
+      border-radius: 12px;
+      border: 1px solid #333;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      padding: 20px 18px;
+    }
+    @media (min-width: 640px) {
+      .card { padding: 32px; }
+    }
+
+    h2.title {
+      font-size: 20px;
+      text-align: center;
+      margin: 0 0 8px;
+      color: #fff;
+    }
+    .subtitle {
+      font-size: 13px;
+      text-align: center;
+      color: #a0a0a0;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #ccc;
+      margin-bottom: 6px;
+    }
+    .required { color: #e26161; }
     
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a73e8">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Nath Agenda">
-    <link rel="apple-touch-icon" href="calendar.png">
-    <link rel="icon" type="image/png" href="calendar.png">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    input[type="text"], input[type="date"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    input[type="text"]::placeholder, input[type="date"]::placeholder {
+      color: #666;
+    }
+    input[type="text"]:focus, input[type="date"]:focus {
+      border-color: #d4af37;
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+    }
     
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log("PWA Ativo:", reg.scope))
-            .catch(err => console.log("Erro PWA:", err));
-        });
-      }
-    </script>
-    
-    <style>
-        :root {
-            --google-blue: #1a73e8;
-            --border-color: #dadce0;
-            --bg-main: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #3c4043;
-            --header-bg: #ffffff;
-        }
+    .field { margin-bottom: 16px; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
 
-        [data-theme="dark"] {
-            --bg-main: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #e8eaed;
-            --border-color: #3c4043;
-            --header-bg: #1e1e1e;
-            color-scheme: dark;
-        }
+    /* Estilos para Radio e Checkbox */
+    .options-group {
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    .radio-label, .check-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: #ddd;
+      cursor: pointer;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .radio-label:last-child, .check-label:last-child {
+      margin-bottom: 0;
+    }
+    input[type="radio"], input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: #d4af37;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
 
-        body { 
-            background-color: var(--bg-main); 
-            color: var(--text-main);
-            font-family: 'Roboto', sans-serif;
-            transition: all 0.3s ease;
-            overflow-x: hidden;
-        }
+    button {
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary {
+      width: 100%;
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 8px;
+      background: #d4af37;
+      color: #121212;
+      font-weight: 700;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      background: #e6c55a;
+      transform: translateY(-1px);
+    }
+    .btn-primary[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
 
-        .header-top {
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            border-bottom: 1px solid var(--border-color);
-            background: var(--header-bg);
-            position: sticky; top: 0; z-index: 1030;
-        }
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #d4af37;
+      font-size: 13px;
+      background: none;
+      padding: 0;
+      margin-bottom: 16px;
+    }
+    .btn-link:hover { text-decoration: underline; }
 
-        .contract-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+    .contract-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #ccc;
+      text-align: justify;
+      background: #2a2a2a;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #444;
+      margin-top: 16px;
+    }
+    .section-title {
+      font-weight: 700;
+      color: #d4af37;
+      margin: 16px 0 8px;
+    }
 
-        .form-control {
-            background-color: transparent;
-            border: 1px solid var(--border-color);
-            color: inherit;
-            border-radius: 8px;
-            padding: 12px;
-        }
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-top: 16px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #d4af37;
+    }
 
-        .form-control:focus {
-            background-color: transparent;
-            color: inherit;
-            border-color: var(--google-blue);
-            box-shadow: 0 0 0 3px rgba(26,115,232,0.2);
-        }
+    .status-list { margin-top: 16px; display: grid; gap: 8px; font-size: 13px; }
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .status-ok { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); }
+    .status-warn { background: rgba(234, 179, 8, 0.1); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.2); }
+    .status-icon { width: 18px; height: 18px; flex-shrink: 0; }
 
-        .btn-google {
-            background-color: var(--google-blue);
-            color: white;
-            border-radius: 24px;
-            padding: 12px 40px;
-            font-weight: 500;
-            border: none;
-            transition: transform 0.2s;
-        }
+    .signature-row {
+      border-top: 1px solid #444;
+      padding-top: 20px;
+      margin-top: 20px;
+      display: grid;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .signature-row { grid-template-columns: 1fr 1fr; }
+    }
+    .signature-box {
+      background: #121212;
+      border-radius: 8px;
+      border: 1px dashed #555;
+      padding: 16px;
+      font-size: 13px;
+      text-align: center;
+    }
 
-        .btn-google:hover {
-            background-color: #1557b0;
-            color: white;
-            transform: translateY(-1px);
-        }
+    .center { text-align: center; }
+    .success-icon-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 2px solid #4ade80;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4ade80;
+    }
+    .success-icon { width: 32px; height: 32px; }
 
-        iframe {
-            width: 100%;
-            height: 500px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            margin-top: 20px;
-            background: white;
-        }
+    footer {
+      text-align: center;
+      padding: 24px 16px;
+      font-size: 12px;
+      color: #666;
+    }
+    .brand-highlight { color: #d4af37; font-weight: 600; }
+  </style>
 
-        .theme-toggle { cursor: pointer; padding: 10px; border-radius: 50%; color: var(--text-main); text-decoration: none; }
-        .theme-toggle:hover { background: rgba(128,128,128,0.1); }
-
-        @media (max-width: 768px) {
-            .header-top h5 { font-size: 0.9rem; }
-            .contract-card { padding: 15px; border-radius: 0; border-left: none; border-right: none; }
-            iframe { height: 400px; }
-        }
-    </style>
-
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </head>
-<body data-theme="light">
-
-<header class="header-top shadow-sm">
-    <div class="d-flex align-items-center">
-        <i class="bi bi-file-earmark-text-fill text-primary fs-4 me-2"></i>
-        <h5 class="mb-0 fw-bold d-none d-sm-block">Contrato Digital | <span class="text-secondary fw-normal">Nathalli Ricco</span></h5>
-        <h5 class="mb-0 fw-bold d-sm-none">Contrato</h5>
-    </div>
-    <div class="d-flex align-items-center gap-1">
-        <a href="https://azdevcoder.github.io/nathricco" class="theme-toggle"><i class="bi bi-house fs-4"></i></a>
-        <div class="theme-toggle" id="themeBtn"><i class="bi bi-moon-stars fs-4" id="themeIcon"></i></div>
-    </div>
-</header>
-
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-8">
-            <div class="contract-card">
-                <div class="text-center mb-4">
-                    <h4 class="fw-bold">Dados para Preenchimento</h4>
-                    <p class="text-muted small">Os dados abaixo serão inseridos automaticamente no documento.</p>
-                </div>
-
-                <form id="formContrato">
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <label class="small fw-bold mb-1">Nome Completo</label>
-                            <input type="text" id="nome" class="form-control" placeholder="Seu nome completo" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="small fw-bold mb-1">CPF</label>
-                            <input type="text" id="cpf" class="form-control" placeholder="000.000.000-00" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="small fw-bold mb-1">WhatsApp</label>
-                            <input type="text" id="telefone" class="form-control" placeholder="(00) 00000-0000" required>
-                        </div>
-                        <div class="col-12 mt-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="checkTermos" required>
-                                <label class="form-check-label small" for="checkTermos">Aceito os termos do contrato.</label>
-                            </div>
-                            <div class="form-check mt-2">
-                                <input class="form-check-input" type="checkbox" id="checkImagem">
-                                <label class="form-check-label small" for="checkImagem">Permito a utilização da minha imagem para fins de divulgação.</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <button type="submit" id="btnEnviar" class="btn btn-google shadow-sm w-100 w-md-auto">
-                            <i class="bi bi-pencil-square me-2"></i> Assinar e Enviar Contrato
-                        </button>
-                    </div>
-                </form>
-
-                <hr class="my-4">
-                <h6 class="fw-bold mb-3"><i class="bi bi-eye me-2"></i>Pré-visualização (Documento Original)</h6>
-                <iframe id="pdfViewer" src="Contrato.pdf"></iframe>
-            </div>
+<body>
+  <div class="page">
+    <header>
+      <div class="header-inner">
+        <div class="header-text">
+          <h1>Nathalli Ricco</h1>
+          <p>Estética e Sobrancelha • Assinatura de Contrato</p>
         </div>
-    </div>
-</div>
+      </div>
+    </header>
 
-<script>
-    // Gerenciamento de Tema
-    const themeBtn = document.getElementById('themeBtn');
-    const themeIcon = document.getElementById('themeIcon');
-    const body = document.body;
-    const savedTheme = localStorage.getItem('theme_nath') || 'light';
+    <main>
+      <div class="container">
+        <div id="step-form" class="card">
+          <h2 class="title">Contrato de Prestação de Serviços</h2>
+          <p class="subtitle">Preencha seus dados para gerar e assinar o contrato digital.</p>
+
+          <form id="formContrato">
+            <div class="field">
+              <label>Nome completo <span class="required">*</span></label>
+              <input id="nome" type="text" placeholder="Digite seu nome completo" required />
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label>CPF <span class="required">*</span></label>
+                <input id="cpf" type="text" placeholder="000.000.000-00" required />
+              </div>
+              <div class="field">
+                <label>Telefone / WhatsApp <span class="required">*</span></label>
+                <input id="telefone" type="text" placeholder="(00) 00000-0000" required />
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label>Data de nascimento <span class="required">*</span></label>
+                <input id="dataNascimento" type="date" required />
+              </div>
+              <div class="field">
+                <label>Endereço completo <span class="required">*</span></label>
+                <input id="endereco" type="text" placeholder="Rua, Número, Bairro, Cidade" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Uso de Imagem <span class="required">*</span></label>
+              <div class="options-group">
+                <label class="radio-label">
+                  <input type="radio" name="usoImagem" value="autorizo" required>
+                  Autorizo o uso da minha imagem em redes sociais para fins comerciais.
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="usoImagem" value="nao_autorizo" required>
+                  Não Autorizo o uso da minha imagem em redes sociais para fins comerciais.
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="options-group" style="border-color: #d4af37;">
+                <label class="check-label">
+                  <input type="checkbox" id="aceiteTermos" required>
+                  <strong>Declaro que li e estou de acordo com as informações e normas de atendimento.</strong>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+              Visualizar Contrato
+            </button>
+          </form>
+        </div>
+
+        <div id="step-preview" class="card" style="display:none;">
+          <button type="button" class="btn-link" id="btnVoltar">
+            &larr; Voltar e editar dados
+          </button>
+
+          <h2 class="title">Revisão do Contrato</h2>
+
+          <div class="contract-text" id="previewContrato"></div>
+
+          <div class="alert">
+            <div>
+              Ao clicar em <strong>"Assinar Contrato"</strong>, o PDF será gerado com validade, salvo e baixado no seu dispositivo.
+            </div>
+          </div>
+
+          <button id="btnAssinar" type="button" class="btn-primary">
+            Assinar Contrato
+          </button>
+        </div>
+
+        <div id="step-success" class="card center" style="display:none;">
+          <div class="success-icon-wrap">
+            <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+          </div>
+          <h2 class="title">Contrato Assinado!</h2>
+          <p class="subtitle">O documento foi gerado e processado com sucesso.</p>
+
+          <div class="status-list" id="statusList"></div>
+          <div id="extraActions" style="margin-top:24px;"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div>Nathalli Ricco Estética e Sobrancelha</div>
+      <div style="margin-top: 8px;">Sistema desenvolvido por <span class="brand-highlight">AzDev Coder</span></div>
+    </footer>
+  </div>
+
+  <script>
+    const { jsPDF } = window.jspdf;
     
-    body.setAttribute('data-theme', savedTheme);
-    themeIcon.className = savedTheme === 'light' ? 'bi bi-moon-stars fs-4' : 'bi bi-sun fs-4';
+    // Substitua pelo número da Nathalli
+    const CONTATO_WHATSAPP = '5544999999999';
 
-    themeBtn.addEventListener('click', () => {
-        const currentTheme = body.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        body.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme_nath', newTheme);
-        themeIcon.className = newTheme === 'light' ? 'bi bi-moon-stars fs-4' : 'bi bi-sun fs-4';
+    const form = document.getElementById('formContrato');
+    const stepForm = document.getElementById('step-form');
+    const stepPreview = document.getElementById('step-preview');
+    const stepSuccess = document.getElementById('step-success');
+    const previewContrato = document.getElementById('previewContrato');
+    const btnVoltar = document.getElementById('btnVoltar');
+    const btnAssinar = document.getElementById('btnAssinar');
+    const statusList = document.getElementById('statusList');
+    const extraActions = document.getElementById('extraActions');
+
+    const inputs = {
+      nome: document.getElementById('nome'),
+      cpf: document.getElementById('cpf'),
+      telefone: document.getElementById('telefone'),
+      dataNascimento: document.getElementById('dataNascimento'),
+      endereco: document.getElementById('endereco')
+    };
+
+    let dadosGlobais = null;
+
+    // Máscaras
+    inputs.cpf.addEventListener('input', (e) => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+      else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{3})/, "$1.$2.$3");
+      else if (v.length > 3) v = v.replace(/(\d{3})(\d{3})/, "$1.$2");
+      e.target.value = v;
     });
 
-    // Lógica do PDF e Integração
-    const form = document.getElementById("formContrato");
-    const btn = document.getElementById("btnEnviar");
-    const pdfViewer = document.getElementById("pdfViewer");
-    const contatoWhatsApp = "5544999792806";
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        btn.disabled = true;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processando...';
-
-        const dados = {
-            nome: document.getElementById("nome").value.trim(),
-            cpf: document.getElementById("cpf").value.trim(),
-            telefone: document.getElementById("telefone").value.trim()
-        };
-
-        try {
-            // 1. Carregar o PDF base
-            const res = await fetch("Contrato.pdf");
-            if (!res.ok) throw new Error("Arquivo Contrato.pdf não encontrado na raiz.");
-            
-            const existingPdfBytes = await res.arrayBuffer();
-            const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
-            const font = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
-
-            const pages = pdfDoc.getPages();
-            const firstPage = pages[0];
-            const { height } = firstPage.getSize();
-
-            // 2. Escrever os dados (ajuste as coordenadas x, y se necessário)
-            firstPage.drawText(dados.nome, { x: 130, y: height - 248, size: 11, font });
-            firstPage.drawText(dados.cpf, { x: 360, y: height - 270, size: 11, font });
-            firstPage.drawText(dados.telefone, { x: 380, y: height - 293, size: 11, font });
-            
-            const carimbo = `Assinado digitalmente por: ${dados.nome} em ${new Date().toLocaleString("pt-BR")}`;
-            firstPage.drawText(carimbo, { x: 50, y: 30, size: 7, font, opacity: 0.6 });
-
-            // 3. Gerar o arquivo final
-            const pdfBytes = await pdfDoc.save();
-            const pdfBlob = new Blob([pdfBytes], { type: "application/pdf" });
-            
-            // Atualiza o preview para o usuário ver o que assinou
-            pdfViewer.src = URL.createObjectURL(pdfBlob);
-
-            // 4. Preparar envio para o servidor AzDev (Render)
-            const nomeArquivo = `Contrato_${dados.nome.replace(/\s+/g, "_")}_${Date.now().toString().slice(-4)}.pdf`;
-            
-            const reader = new FileReader();
-            reader.readAsDataURL(pdfBlob);
-            reader.onloadend = async () => {
-                const base64data = reader.result.split(',')[1];
-                
-                const response = await fetch("https://nathricco.onrender.com/upload", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        nomeArquivo: nomeArquivo, 
-                        conteudoBase64: base64data 
-                    })
-                });
-
-                if (response.ok) {
-                    alert("Sucesso! O contrato foi assinado e salvo.");
-                    // 5. Redirecionar para o WhatsApp
-                    const msg = encodeURIComponent(`Olá Nathalli, aqui é ${dados.nome}. Acabei de assinar o contrato digital.`);
-                    window.open(`https://wa.me/${contatoWhatsApp}?text=${msg}`, "_blank");
-                } else {
-                    const errorDetails = await response.json();
-                    throw new Error(errorDetails.error || "Erro ao salvar no servidor.");
-                }
-            };
-
-        } catch (err) {
-            console.error(err);
-            alert("Erro na operação: " + err.message);
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
+    inputs.telefone.addEventListener('input', (e) => {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+      if (v.length > 10) v = v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+      else if (v.length > 6) v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
+      else if (v.length > 2) v = v.replace(/(\d{2})(\d{0,5})/, "($1) $2");
+      e.target.value = v;
     });
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    function formatarData(dataISO) {
+      if (!dataISO) return '';
+      const [ano, mes, dia] = dataISO.split('-');
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    function construirPreviewContrato(d) {
+      const dataAtual = new Date().toLocaleDateString('pt-BR');
+      const textoImagem = d.usoImagem === 'autorizo' 
+        ? '✓ Autorizo o uso da minha imagem em redes sociais para fins comerciais.' 
+        : '✓ Não Autorizo o uso da minha imagem em redes sociais para fins comerciais.';
+
+      let html = `<h3 style="text-align:center; color:#d4af37; margin-top:0;">CONTRATO DE PRESTAÇÃO DE SERVIÇOS ESTÉTICOS</h3>`;
+      
+      html += `<p><strong>Cliente:</strong> ${d.nome}</p>`;
+      html += `<p><strong>CPF:</strong> ${d.cpf}</p>`;
+      html += `<p><strong>Telefone:</strong> ${d.telefone}</p>`;
+      html += `<p><strong>Endereço:</strong> ${d.endereco}</p>`;
+      html += `<p><strong>Data de nascimento:</strong> ${formatarData(d.dataNascimento)}</p>`;
+      
+      html += `<hr style="border-color:#444; margin:16px 0;">`;
+      html += `<p>Pelo presente instrumento, a cliente declara estar ciente e de acordo com as normas de atendimento da Nathalli Rico Estética e Sobrancelha, firmando o presente contrato de prestação de serviços estéticos.</p>`;
+      
+      html += `<p class="section-title">Cláusula 1ª. Do OBJETO.</p>`;
+      html += `<p>O presente contrato tem como objetivo a prestação de serviços estéticos conforme o procedimento escolhido pela cliente.</p>`;
+
+      html += `<p class="section-title">Cláusula 2ª. Dos DADOS E AUTORIZAÇÃO.</p>`;
+      html += `<p>A cliente declara que as informações são verdadeiras sobre seu estado de saúde e autoriza a realização dos procedimentos estéticos, estando ciente dos cuidados necessários antes e após cada atendimento.</p>`;
+
+      html += `<p class="section-title">Cláusula 3ª. De PONTUALIDADE.</p>`;
+      html += `<p>A pontualidade é fundamental para a organização e qualidade dos atendimentos. Solicita-se que a cliente chegue no horário agendado. Em caso de atraso superior a 10 minutos, o atendimento poderá ser reduzido ou remarcado conforme disponibilidade, para não prejudicar a agenda.</p>`;
+
+      html += `<p class="section-title">Cláusula 4ª. Da DESMARCAÇÃO E REAGENDAMENTO.</p>`;
+      html += `<p>Caso a cliente precise desmarcar o horário, solicita-se aviso prévio mínimo de 24 horas. Quando houver desmarcação sem aviso prévio ou falta, o atendimento será remarcado somente ao final do processo ou pacote em andamento, respeitando a agenda e disponibilidade.</p>`;
+
+      html += `<p class="section-title">Cláusula 5ª. COMPROMISSO.</p>`;
+      html += `<p>Este contrato tem como objetivo garantir organização, respeito ao tempo de ambas as partes e a qualidade dos serviços prestados.</p>`;
+
+      html += `<div style="background:#1e1e1e; padding:12px; border-left:4px solid #d4af37; margin:16px 0;"><strong>${textoImagem}</strong></div>`;
+      html += `<div style="background:#1e1e1e; padding:12px; border-left:4px solid #d4af37;"><strong>✓ Declaro que li e estou de acordo com as informações acima.</strong></div>`;
+
+      html += `<p style="margin-top:24px; color:#888;">Local e data: Maringá, ${dataAtual}</p>`;
+
+      html += `<div class="signature-row">`;
+      html += `<div class="signature-box"><strong>Assinatura da cliente:</strong><br><br>${d.nome}</div>`;
+      html += `</div>`;
+
+      previewContrato.innerHTML = html;
+    }
+
+    function gerarPDF(d) {
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const pw = doc.internal.pageSize.getWidth();
+      
+      // MARGENS E ESPAÇAMENTOS REDUZIDOS PARA CABER EM UMA PÁGINA
+      const margin = 15; 
+      const maxW = pw - (margin * 2);
+      let y = 15; 
+      const lh = 5; 
+      const dataAtual = new Date().toLocaleDateString('pt-BR');
+
+      function addText(text, isBold = false, isCenter = false, size = 9, color = [0,0,0]) {
+        doc.setFont('helvetica', isBold ? 'bold' : 'normal');
+        doc.setFontSize(size);
+        doc.setTextColor(color[0], color[1], color[2]);
+        
+        const lines = doc.splitTextToSize(text, maxW);
+        lines.forEach(line => {
+          const x = isCenter ? (pw / 2) : margin;
+          doc.text(line, x, y, { align: isCenter ? 'center' : 'left', maxWidth: maxW });
+          y += lh;
+        });
+        y += 1; // Espaçamento leve entre blocos
+      }
+
+      addText('CONTRATO DE PRESTAÇÃO DE SERVIÇOS ESTÉTICOS', true, true, 12);
+      y += 2;
+
+      addText(`Cliente: ${d.nome}`, false);
+      addText(`CPF: ${d.cpf}`, false);
+      addText(`Telefone: ${d.telefone}`, false);
+      addText(`Endereço: ${d.endereco}`, false);
+      addText(`Data de nascimento: ${formatarData(d.dataNascimento)}`, false);
+      y += 2;
+
+      addText('Pelo presente instrumento, a cliente declara estar ciente e de acordo com as normas de atendimento da Nathalli Rico Estética e Sobrancelha, firmando o presente contrato de prestação de serviços estéticos.', false, false, 9);
+      y += 2;
+
+      addText('Cláusula 1ª. Do OBJETO.', true);
+      addText('O presente contrato tem como objetivo a prestação de serviços estéticos conforme o procedimento escolhido pela cliente.');
+      
+      addText('Cláusula 2ª. Dos DADOS E AUTORIZAÇÃO.', true);
+      addText('A cliente declara que as informações são verdadeiras sobre seu estado de saúde e autoriza a realização dos procedimentos estéticos, estando ciente dos cuidados necessários antes e após cada atendimento.');
+
+      addText('Cláusula 3ª. De PONTUALIDADE.', true);
+      addText('A pontualidade é fundamental para a organização e qualidade dos atendimentos. Solicita-se que a cliente chegue no horário agendado. Em caso de atraso superior a 10 minutos, o atendimento poderá ser reduzido ou remarcado conforme disponibilidade, para não prejudicar a agenda.');
+
+      addText('Cláusula 4ª. Da DESMARCAÇÃO E REAGENDAMENTO.', true);
+      addText('Caso a cliente precise desmarcar o horário, solicita-se aviso prévio mínimo de 24 horas. Quando houver desmarcação sem aviso prévio ou falta, o atendimento será remarcado somente ao final do processo ou pacote em andamento, respeitando a agenda e disponibilidade.');
+
+      addText('Cláusula 5ª. COMPROMISSO.', true);
+      addText('Este contrato tem como objetivo garantir organização, respeito ao tempo de ambas as partes e a qualidade dos serviços prestados.');
+      y += 2;
+
+      const textoImagem = d.usoImagem === 'autorizo' 
+        ? '[ X ] Autorizo o uso da minha imagem em redes sociais para fins comerciais.'
+        : '[ X ] Não Autorizo o uso da minha imagem em redes sociais para fins comerciais.';
+      addText(textoImagem, true);
+      addText('[ X ] Declaro que li e estou de acordo com as informações acima.', true);
+      
+      y += 6;
+      addText(`Local e data: Maringá, ${dataAtual}`, false);
+      y += 12;
+
+      // Linha de Assinatura
+      doc.line(margin, y, margin + 80, y);
+      y += 4;
+      addText('Assinatura da cliente', true);
+      addText(d.nome, false);
+      addText(`CPF: ${d.cpf}`, false, false, 8);
+
+      // Rodapé centralizado
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text(`Documento gerado digitalmente - Nathalli Ricco Estética`, pw / 2, 290, { align: 'center' });
+
+      return doc;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const usoImagemSelecionado = document.querySelector('input[name="usoImagem"]:checked');
+      const aceiteTermos = document.getElementById('aceiteTermos').checked;
+
+      if (!usoImagemSelecionado || !aceiteTermos) {
+        alert("Por favor, preencha as autorizações obrigatórias.");
+        return;
+      }
+
+      dadosGlobais = {
+        nome: inputs.nome.value.trim(),
+        cpf: inputs.cpf.value.trim(),
+        telefone: inputs.telefone.value.trim(),
+        dataNascimento: inputs.dataNascimento.value,
+        endereco: inputs.endereco.value.trim(),
+        usoImagem: usoImagemSelecionado.value
+      };
+
+      construirPreviewContrato(dadosGlobais);
+
+      stepForm.style.display = 'none';
+      stepPreview.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    btnVoltar.addEventListener('click', () => {
+      stepForm.style.display = 'block';
+      stepPreview.style.display = 'none';
+    });
+
+    btnAssinar.addEventListener('click', async () => {
+      btnAssinar.disabled = true;
+      btnAssinar.textContent = 'Gerando contrato...';
+      statusList.innerHTML = '';
+
+      try {
+        const doc = gerarPDF(dadosGlobais);
+        const pdfBlob = doc.output('blob');
+        const nomeArquivo = `Contrato_Nathalli_Ricco_${dadosGlobais.nome.replace(/\s+/g, '_')}.pdf`;
+
+        // Baixar no dispositivo
+        const url = URL.createObjectURL(pdfBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = nomeArquivo;
+        a.click();
+
+        statusList.innerHTML += `<div class="status-item status-ok">✓ PDF gerado e baixado no dispositivo.</div>`;
+
+        // Preparar mensagem WhatsApp
+        const msg = encodeURIComponent(`Olá Nathalli, segue o contrato assinado por ${dadosGlobais.nome}`);
+        window.open(`https://wa.me/${CONTATO_WHATSAPP}?text=${msg}`, '_blank');
+        
+        statusList.innerHTML += `<div class="status-item status-ok">✓ Redirecionando para o WhatsApp...</div>`;
+
+        // Ações extras
+        extraActions.innerHTML = `<button onclick="location.reload()" class="btn-link" style="color:#a0a0a0;">Novo Contrato</button>`;
+
+        stepPreview.style.display = 'none';
+        stepSuccess.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      } catch (err) {
+        alert('Erro ao gerar o contrato.');
+        console.error(err);
+      } finally {
+        btnAssinar.disabled = false;
+        btnAssinar.textContent = 'Assinar Contrato';
+      }
+    });
+  </script>
 </body>
 </html>
