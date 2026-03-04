@@ -1,68 +1,77 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import fetch from "node-fetch"; // Certifique-se de que está instalado ou use o global do Node 18+
+import fetch from "node-fetch";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configurações do GitHub vindas das variáveis de ambiente do Render
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_REPO = process.env.GITHUB_REPO || "azdevcoder/nathricco";
 const GITHUB_BRANCH = process.env.GITHUB_BRANCH || "main";
 
 app.use(cors());
-app.use(express.json({ limit: "50mb" })); // Aumentado para suportar PDFs
+app.use(express.json({ limit: "50mb" }));
 
-// --- FUNÇÃO AUXILIAR PARA SALVAR NO GITHUB ---
+// --- FUNÇÃO AUXILIAR PARA SALVAR NO GITHUB (Corrigida com async) ---
 async function salvarNoGithub(path, conteudoBase64, mensagem) {
     const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`;
     
-    // 1. Tentar pegar o SHA do arquivo se ele já existir
-    const getResp = await fetch(url, {
-        headers: { Authorization: `token ${GITHUB_TOKEN}` }
-    });
-    
-    let sha;
-    if (getResp.ok) {
-        const getJson = await getResp.json();
-        sha = getJson.sha;
-    }
+    try {
+        const getResp = await fetch(url, {
+            headers: { Authorization: `token ${GITHUB_TOKEN}` }
+        });
+        
+        let sha;
+        if (getResp.ok) {
+            const getJson = await getResp.json();
+            sha = getJson.sha;
+        }
 
-    // 2. Enviar o arquivo
-    const putResp = await fetch(url, {
-        method: "PUT",
-        headers: {
-            Authorization: `token ${GITHUB_TOKEN}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
+        const body = {
             message: mensagem,
             content: conteudoBase64,
-            sha: sha, // Se existir, o GitHub atualiza; se não, cria novo
             branch: GITHUB_BRANCH
-        })
-    });
+        };
+        if (sha) body.sha = sha;
 
-    return putResp;
+        const putResp = await fetch(url, {
+            method: "PUT",
+            headers: {
+                Authorization: `token ${GITHUB_TOKEN}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        });
+
+        return putResp;
+    } catch (error) {
+        console.error("Erro na função salvarNoGithub:", error);
+        throw error;
+    }
 }
 
-// --- ROTA DA AGENDA (Salvar agendamentos.json) ---
+// --- ROTA DA AGENDA ---
 app.post("/salvar-agenda", async (req, res) => {
     try {
         const eventos = req.body;
         const jsonString = JSON.stringify(eventos, null, 2);
-        const base64 = Buffer.from(jsonString, 'utf-8').toString('base64');
+        // No ES Modules, usamos Buffer assim:
+        const base64 = Buffer.from(jsonString).toString('base64');
         
         const response = await salvarNoGithub('dados/agendamentos.json', base64, "Sincronização de Agenda");
 
-        if (response.ok) return res.json({ ok: true });
-        const err = await response.json();
-        res.status(500).json({ error: "Erro GitHub Agenda", details: err });
+        if (response.ok) {
+            return res.json({ ok: true });
+        } else {
+            const errData = await response.json();
+            return res.status(500).json({ error: "Erro no GitHub", details: errData });
+        }
     } catch (err) {
-        res.status(500).json({ error: "Erro interno Agenda" });
+        console.error(err);
+        res.status(500).json({ error: "Erro interno na Agenda" });
     }
 });
 
@@ -70,15 +79,18 @@ app.post("/salvar-agenda", async (req, res) => {
 app.post("/upload", async (req, res) => {
     try {
         const { nomeArquivo, conteudoBase64 } = req.body;
-        // Salva dentro da pasta dados/ para manter organizado
         const path = `dados/${nomeArquivo}`; 
         
         const response = await salvarNoGithub(path, conteudoBase64, `Novo contrato: ${nomeArquivo}`);
 
-        if (response.ok) return res.json({ ok: true });
-        res.status(500).json({ error: "Erro GitHub Contrato" });
+        if (response.ok) {
+            return res.json({ ok: true });
+        } else {
+            return res.status(500).json({ error: "Erro ao salvar contrato" });
+        }
     } catch (err) {
-        res.status(500).json({ error: "Erro interno Upload" });
+        console.error(err);
+        res.status(500).json({ error: "Erro interno no Upload" });
     }
 });
 
@@ -93,17 +105,23 @@ app.get('/contratos-assinados-nath', async (req, res) => {
         if (!resp.ok) return res.json([]);
 
         const data = await resp.json();
+        // Filtra apenas PDFs e remove lixo de nomes
         const arquivos = data
-            .filter(file => file.name.endsWith('.pdf'))
+            .filter(file => file.name.toLowerCase().endsWith('.pdf'))
             .map(file => ({
-                name: file.name.replace('.pdf', '').replace(/_/g, ' '),
-                url: file.download_url
+                name: file.name
+                    .replace('.pdf', '')
+                    .replace(/_/g, ' ')
+                    .replace(/^[0-9]+-/, ''), // Remove prefixo de data se houver
+                url: file.download_url,
+                date: "Assinado"
             }));
 
         res.json(arquivos);
     } catch (err) {
-        res.status(500).json([]);
+        console.error(err);
+        res.json([]);
     }
 });
 
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor AzDev rodando na porta ${PORT}`));
