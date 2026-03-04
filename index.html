@@ -328,20 +328,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const stringData = JSON.stringify(events);
         localStorage.setItem('appointments_nath', stringData);
 
-        fetch("https://nathricco.onrender.com/salvar-agenda", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: stringData
-        }).catch(e => console.log("Servidor offline, salvo localmente."));
-    }
-
-    async function loadEvents() {
-        const localData = localStorage.getItem('appointments_nath');
-        if (localData) {
-            calendar.removeAllEvents();
-            calendar.addEventSource(JSON.parse(localData));
-        }
-
+fetch("https://nathricco.onrender.com/salvar-agenda", { // <--- MUDE AQUI
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: stringData
+}).catch(e => console.log("Erro ao sincronizar"));
         try {
             const res = await fetch("https://azdevcoder.github.io/nathricco/dados/agendamentos.json?t=" + Date.now());
             if (res.ok) {
@@ -424,5 +415,6 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
 
 
