@@ -686,13 +686,6 @@
     "backgroundColor": "#1a73e8"
   },
   {
-    "id": "ID-1781365773704",
-    "title": "Denis  - Desing",
-    "start": "2026-06-20T11:30:00-03:00",
-    "end": "2026-06-20T12:00:00-03:00",
-    "backgroundColor": "#1a73e8"
-  },
-  {
     "id": "ID-1781639670359",
     "title": "Patrícia  - Desing",
     "start": "2026-06-17T12:00:00-03:00",
@@ -718,6 +711,13 @@
     "title": "Telma - Limpeza de Pele",
     "start": "2026-06-20T10:00:00-03:00",
     "end": "2026-06-20T11:30:00-03:00",
+    "backgroundColor": "#1a73e8"
+  },
+  {
+    "id": "ID-1781365773704",
+    "title": "Denis  - Limpeza de Pele",
+    "start": "2026-06-20T11:00:00-03:00",
+    "end": "2026-06-20T12:30:00-03:00",
     "backgroundColor": "#1a73e8"
   }
 ]
