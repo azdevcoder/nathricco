@@ -1246,31 +1246,10 @@
     "backgroundColor": "#1a73e8"
   },
   {
-    "id": "ID-1790632293715",
+    "id": "ID-1790632580395",
     "title": "Victor  - Limpeza de Pele",
     "start": "2026-09-30T09:30:00-03:00",
     "end": "2026-09-30T11:00:00-03:00",
-    "backgroundColor": "#1a73e8"
-  },
-  {
-    "id": "ID-1790632323286",
-    "title": "Giovana  - Protocolo Corporal",
-    "start": "2026-10-03T10:00:00-03:00",
-    "end": "2026-10-03T12:00:00-03:00",
-    "backgroundColor": "#f4511e"
-  },
-  {
-    "id": "ID-1790632350734",
-    "title": "Giovana  - Desing",
-    "start": "2026-10-03T14:30:00-03:00",
-    "end": "2026-10-03T15:00:00-03:00",
-    "backgroundColor": "#1a73e8"
-  },
-  {
-    "id": "ID-1790632376229",
-    "title": "Pedro - Limpeza de Pele",
-    "start": "2026-10-03T15:00:00-03:00",
-    "end": "2026-10-03T16:30:00-03:00",
     "backgroundColor": "#1a73e8"
   }
 ]
