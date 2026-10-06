@@ -1344,13 +1344,6 @@
     "backgroundColor": "#1a73e8"
   },
   {
-    "id": "ID-1790961371675",
-    "title": "Jocimere  - Desing c/ Henna",
-    "start": "2026-10-07T09:30:00-03:00",
-    "end": "2026-10-07T10:30:00-03:00",
-    "backgroundColor": "#1a73e8"
-  },
-  {
     "id": "ID-1791072687403",
     "title": "Giovana  - Desing",
     "start": "2026-10-07T11:30:00-03:00",
@@ -1397,6 +1390,13 @@
     "title": "Telma - Desing c/ Henna",
     "start": "2026-10-09T11:30:00-03:00",
     "end": "2026-10-09T12:30:00-03:00",
+    "backgroundColor": "#1a73e8"
+  },
+  {
+    "id": "ID-1790961371675",
+    "title": "Jocimere  - Limpeza de Pele",
+    "start": "2026-10-07T13:00:00-03:00",
+    "end": "2026-10-07T14:30:00-03:00",
     "backgroundColor": "#1a73e8"
   }
 ]
