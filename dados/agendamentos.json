@@ -1379,13 +1379,6 @@
     "backgroundColor": "#1a73e8"
   },
   {
-    "id": "ID-1791300460419",
-    "title": "Denis  - Desing",
-    "start": "2026-10-10T13:00:00-03:00",
-    "end": "2026-10-10T13:30:00-03:00",
-    "backgroundColor": "#1a73e8"
-  },
-  {
     "id": "ID-1791300478098",
     "title": "Telma - Desing c/ Henna",
     "start": "2026-10-09T11:30:00-03:00",
@@ -1404,6 +1397,13 @@
     "title": "Jéssica  - Desing",
     "start": "2026-10-10T12:30:00-03:00",
     "end": "2026-10-10T13:00:00-03:00",
+    "backgroundColor": "#1a73e8"
+  },
+  {
+    "id": "ID-1791300460419",
+    "title": "Denis  - Desing",
+    "start": "2026-10-10T14:00:00-03:00",
+    "end": "2026-10-10T14:30:00-03:00",
     "backgroundColor": "#1a73e8"
   }
 ]
